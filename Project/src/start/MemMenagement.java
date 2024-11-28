@@ -31,7 +31,7 @@ public class MemMenagement extends JFrame {
         setTitle("회원관리");
         backgroundImage = new ImageIcon("images/train3.jpg");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1105, 585);
+        setBounds(100, 100, 1105, 580);
         setResizable(false);
         contentPane = new JPanel() {
         	@Override
@@ -48,24 +48,9 @@ public class MemMenagement extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        // 버튼 생성 및 배치
-        JButton Member_BT = new JButton("회원관리");
-        Member_BT.setBackground(new Color(255, 255, 255));
-        Member_BT.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
-        });
-        Member_BT.setBounds(410, 33, 97, 34);
-        contentPane.add(Member_BT);
-
-        JButton Train_BT = new JButton("기차관리");
-        Train_BT.setBackground(new Color(255, 255, 255));
-        Train_BT.setBounds(211, 33, 97, 34);
-        contentPane.add(Train_BT);
-
         JButton Logout_BT = new JButton("로그아웃");
         Logout_BT.setBackground(new Color(255, 255, 255));
-        Logout_BT.setBounds(30, 33, 97, 34);
+        Logout_BT.setBounds(965, 470, 89, 25);
         contentPane.add(Logout_BT);
 
         // 테이블 생성 및 설정
@@ -100,18 +85,23 @@ public class MemMenagement extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         	}
         });
-        Delet_BT.setBounds(874, 471, 76, 23);
+        Delet_BT.setBounds(652, 471, 76, 23);
         contentPane.add(Delet_BT);
         
         JButton Change_BT = new JButton("수정");
         Change_BT.setBackground(new Color(255, 255, 255));
-        Change_BT.setBounds(978, 470, 76, 23);
+        Change_BT.setBounds(756, 470, 76, 23);
         contentPane.add(Change_BT);
         
         JButton Reset_BT = new JButton("초기화");
         Reset_BT.setBackground(new Color(255, 255, 255));
         Reset_BT.setBounds(456, 471, 97, 23);
         contentPane.add(Reset_BT);
+        
+        JLabel lblNewLabel = new JLabel("회원관리");
+        lblNewLabel.setFont(new Font("굴림", Font.BOLD, 24));
+        lblNewLabel.setBounds(30, 33, 107, 34);
+        contentPane.add(lblNewLabel);
 
         // 가운데 정렬을 위한 렌더러 설정
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
