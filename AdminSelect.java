@@ -34,7 +34,7 @@ public class AdminSelect extends JFrame {
     DefaultTableModel model;
     JTable table;
 
-    Dto dto;
+//    Dto dto;
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
@@ -87,24 +87,12 @@ public class AdminSelect extends JFrame {
         
         
         JPanel topPanel = new JPanel();
-        JButton button1 = new JButton("수정");
         JButton button2 = new JButton("삭제");
-        JButton button3 = new JButton("추가");
         
-        topPanel.add(button1);
         topPanel.add(button2);
-        topPanel.add(button3);
         
         add(topPanel, BorderLayout.NORTH);
         
-        button1.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				connect();
-				update();
-			}
-		});
         
         button2.addActionListener(new ActionListener() {
 			
@@ -114,15 +102,7 @@ public class AdminSelect extends JFrame {
 				delete();
 			}
 		});
-        
-        button3.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				insert();
-			}
-		});
-        
+  
         
 
         setBounds(100, 100, 932, 553);
@@ -165,112 +145,57 @@ public class AdminSelect extends JFrame {
         }
     }
     
-    void update() {
-    	try {
-			// 1. 오라클 데이터베이스로 전송할 SQL문을 작성.
-			sql = "update emp set job = ?, mgr = ?, sal = ?, "
-					+ " comm = ?, deptno = ? where empno = ?";
-//			
-//			pstmt = con.prepareStatement(sql);
-//			
-//			pstmt.setString(1, jcb1.getSelectedItem().toString());
-//			pstmt.setInt
-//				(2, Integer.parseInt(jcb2.getSelectedItem().toString().substring(0, 4)));
-//			pstmt.setInt(3, Integer.parseInt(jtf3.getText()));
-//			pstmt.setInt(4, Integer.parseInt(jtf4.getText()));
-//			pstmt.setInt
-//			    (5, Integer.parseInt(jcb3.getSelectedItem().toString().substring(0, 2)));
-//			pstmt.setInt(6, Integer.parseInt(jtf1.getText()));
-//			
-			// 2. 오라클 데이터베이스에 SQL문 전송 및 SQL문 실행.
-			int res = pstmt.executeUpdate();
-			
-			if(res > 0) {
-				JOptionPane.showMessageDialog(null, "사원 정보 수정 성공!!!");
-			}else {
-				JOptionPane.showMessageDialog(null, "사원 정보 수정 실패~~~");
-			}
-			
-			// 3. 오라클 데이터베이스에 연결되어 있던 자원 종료
-			pstmt.close(); // con.close();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
     void delete() {
+        try {
+            int row = table.getSelectedRow();
+            if (row == -1) {
+                JOptionPane.showMessageDialog(null, "삭제할 기차를 선택하세요.");
+                return; // 아무 행도 선택되지 않으면 함수 종료
+            }
 
-		try {
-			// 1. 오라클 데이터베이스로 전송할 SQL문을 작성.
-			sql = "delete from train where train_num = ?";
-			
-			pstmt = con.prepareStatement(sql);
-			
-			// 테이블의 특정 행을 클릭했을 때 해당 테이블의 값을 가져오는 메서드.
-			int row = table.getSelectedRow();
-			
-			// 해당 행의 값을 가져올 때 해당 행의 0번째 열의 값을 가져오는 방법.
-			pstmt.setInt(1, (int)model.getValueAt(row, 0));
-			
-			
-			// 2. 오라클 데이터베이스에 SQL문 전송 및 SQL문 실행.
-			int res = pstmt.executeUpdate();
-			
-			if(res > 0) {
-				JOptionPane.showMessageDialog(null, "삭제 성공");
-			}else {
-				JOptionPane.showMessageDialog(null, "삭제 실패");
-			}
-			
-			// 실제로 테이블 상의 클릭한 한 레코드를 삭제.
-			model.removeRow(row);
-			
-			// 3. 오라클 데이터베이스에 연결되어 있던 자원 종료.
-			pstmt.close(); con.close();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            // model.getValueAt()을 통해 가져오는 값은 Object이므로 String으로 반환될 수 있음
+            String trainNumStr = model.getValueAt(row, 0).toString();  // 0번째 열의 값을 String으로 받음
+            int trainNum = Integer.parseInt(trainNumStr);  // String을 Integer로 변환
+
+            // 1. schedule 테이블에서 먼저 삭제
+            sql = "delete from schedule where train_num = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, trainNum);  // Integer로 변환된 값 사용
+            int res = pstmt.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null, "일정 삭제 성공");
+            } else {
+                JOptionPane.showMessageDialog(null, "일정 삭제 실패");
+            }
+
+            // 2. train 테이블에서 삭제
+            sql = "delete from train where train_num = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, trainNum);  // Integer로 변환된 값 사용
+            res = pstmt.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null, "기차 삭제 성공");
+            } else {
+                JOptionPane.showMessageDialog(null, "기차 삭제 실패");
+            }
+
+            // 테이블 UI에서 선택된 행 제거
+            model.removeRow(row);
+
+            // 3. 리소스 정리
+            pstmt.close();
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "기차 번호가 올바르지 않습니다.");
+            e.printStackTrace();
+        }
     }
+
+
     
-    void insert() {
-
-		try {
-			// 1. 오라클 데이터베이스에 전송할 SQL문 작성.
-			sql = "insert into train values(?, ?, ?, ?)";
-			
-			pstmt = con.prepareStatement(sql);
-			
-//			pstmt.setInt(1, Integer.parseInt(jtf1.getText()));
-//			pstmt.setString(2, jtf2.getText());
-//			pstmt.setString(3, jcb1.getSelectedItem().toString());
-//			pstmt.setInt
-//				(4, Integer.parseInt(jcb2.getSelectedItem().toString().substring(0, 4)));
-//			pstmt.setInt(5, Integer.parseInt(jtf3.getText()));
-//			pstmt.setInt(6, Integer.parseInt(jtf4.getText()));
-//			pstmt.setInt
-//			    (7, Integer.parseInt(jcb3.getSelectedItem().toString().substring(0, 2)));
-//			
-			// 2. 오라클 데이터베이스에 SQL문 전송 및 SQL문 실행.
-			int res = pstmt.executeUpdate();
-			
-			if(res > 0) {
-				JOptionPane.showMessageDialog(null, "사원 등록 성공");
-			}else {
-				JOptionPane.showMessageDialog(null, "사원 등록 실패");
-			}
-			
-			// 3. 오라클 데이터베이스에 연결되어 있던 자원 종료.
-			pstmt.close(); // con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-
     private void connect() {
         String driver = "oracle.jdbc.driver.OracleDriver";
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
