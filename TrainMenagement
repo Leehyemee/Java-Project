@@ -1,4 +1,4 @@
-package start;
+package windowBuilder;
 
 import java.awt.EventQueue;
 import java.awt.Color;
@@ -25,7 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TrainMenagement extends JFrame {
+public class ddd extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
@@ -33,7 +33,7 @@ public class TrainMenagement extends JFrame {
     private DefaultTableModel model;
     private JTable table;
 
-    public TrainMenagement() {
+    public ddd() {
         setTitle("기차 관리");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1105, 580);
@@ -83,7 +83,9 @@ public class TrainMenagement extends JFrame {
         panel.add(Add_BT_1);
 
         // 테이블 생성 및 설정
-        String[] header = {"TRAIN_NUM", "TRAIN_TYPE", "STR_STATION", "ARR_STATION", "START_DAY", "ARRIVE_DAY", "MONEY", "ECONOMY_SEAT", "BABY_SEAT", "STAND_SEAT", "SCHEDULE_NUM"};
+        String[] header = 
+        	{"TRAIN_NUM", "TRAIN_TYPE", "SCHEDULE_ID", "STR_STATION", "ARR_STATION", "START_DAY", "ARRIVE_DAY", "MONEY", "ECONOMY_SEAT",
+        			"BABY_SEAT", "STAND_SEAT", "SCHEDULE_NUM"};
         model = new DefaultTableModel(header, 0);
         table = new JTable(model);
         JScrollPane jsp = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -206,9 +208,7 @@ public class TrainMenagement extends JFrame {
         
      // "조회" 버튼 클릭 이벤트
         Add_BT_1.addActionListener(e -> {
-            String sql = "SELECT t.TRAIN_NUM, t.TRAIN_TYPE, t.STR_STATION, t.ARR_STATION, " +
-                         "s.SCHEDULE_ID, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.ECONOMY_SEAT, s.BABY_SEAT, s.STAND_SEAT, s.SCHEDULE_NUM " +
-                         "FROM train t JOIN schedule s ON t.TRAIN_NUM = s.TRAIN_NUM"; // SQL 쿼리
+        	String sql = "select * from train t join schedule s on t.train_num = s.train_num";
 
             Connection conn = null;
             PreparedStatement pstmt = null;
@@ -224,21 +224,24 @@ public class TrainMenagement extends JFrame {
 
                 // 조회 결과를 테이블에 추가
                 while (rs.next()) {
-                    String trainNum = rs.getString("TRAIN_NUM");
-                    String trainType = rs.getString("TRAIN_TYPE");
-                    String strStation = rs.getString("STR_STATION");
-                    String arrStation = rs.getString("ARR_STATION");
-                    String scheduleId = rs.getString("SCHEDULE_ID");
-                    String startDay = rs.getString("START_DAY");
-                    String arriveDay = rs.getString("ARRIVE_DAY");
-                    int money = rs.getInt("MONEY");
-                    int economySeat = rs.getInt("ECONOMY_SEAT");
-                    int babySeat = rs.getInt("BABY_SEAT");
-                    String standSeat = rs.getString("STAND_SEAT");
-                    int scheduleNum = rs.getInt("SCHEDULE_NUM");
+
+                    String train_num = rs.getString("TRAIN_NUM");
+                    String train_type = rs.getString("TRAIN_TYPE");
+                    String str_station = rs.getString("STR_STATION");
+                    String arr_station = rs.getString("ARR_STATION");
+                    String start_day = rs.getString("START_DAY");
+                    String arrive_day = rs.getString("ARRIVE_DAY");
+                    String money = rs.getString("MONEY");
+                    String economy_seat = rs.getString("ECONOMY_SEAT");
+                    String baby_seat = rs.getString("BABY_SEAT");
+                    String stand_seat = rs.getString("STAND_SEAT");
+                    
+                    String schedule_id = rs.getString("schedule_id");
+                    String schedule_num = rs.getString("schedule_num");
 
                     // 데이터가 조회되면 테이블에 추가
-                    model.addRow(new Object[]{trainNum, trainType, strStation, arrStation, scheduleId, startDay, arriveDay, money, economySeat, babySeat, standSeat, scheduleNum});
+                    Object[] data = {train_num, train_type, schedule_id, str_station, arr_station, start_day, arrive_day, money, economy_seat, baby_seat, stand_seat,schedule_num};
+                    model.addRow(data);
                 }
 
                 // 조회 완료 메시지
@@ -254,40 +257,40 @@ public class TrainMenagement extends JFrame {
 
 
         // 로그아웃 버튼 이벤트 처리 (기능은 예시로 비워두었습니다)
-        LogOut_BT.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // "종료하시겠습니까?" 메시지 표시
-                int result = JOptionPane.showConfirmDialog(
-                		TrainMenagement.this,    // 부모 창
-                        "종료하시겠습니까?", // 메시지
-                        "로그아웃",         // 제목
-                        JOptionPane.YES_NO_OPTION, // Y/N 옵션
-                        JOptionPane.QUESTION_MESSAGE // 질문 아이콘
-                );
-
-             // "Yes"를 누르면 로그인 화면 실행
-                if (result == JOptionPane.YES_OPTION) {
-                    // Login 클래스 실행
-                    Login loginFrame = new Login();  // Login 클래스를 인스턴스화
-                    loginFrame.setVisible(true);      // 로그인 창을 보이도록 설정
-
-                    // 현재 창을 닫기
-                    dispose();  // MasterMain 창을 닫음
-                }
-                // "No"를 누르면 아무 동작도 하지 않음
-                else if (result == JOptionPane.NO_OPTION) {
-                    // 아무 동작도 하지 않음 (창을 유지)
-                }
-            }
-        });
+//        LogOut_BT.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                // "종료하시겠습니까?" 메시지 표시
+//                int result = JOptionPane.showConfirmDialog(
+//                		TrainMenagement.this,    // 부모 창
+//                        "종료하시겠습니까?", // 메시지
+//                        "로그아웃",         // 제목
+//                        JOptionPane.YES_NO_OPTION, // Y/N 옵션
+//                        JOptionPane.QUESTION_MESSAGE // 질문 아이콘
+//                );
+//
+//             // "Yes"를 누르면 로그인 화면 실행
+//                if (result == JOptionPane.YES_OPTION) {
+//                    // Login 클래스 실행
+//                    Login loginFrame = new Login();  // Login 클래스를 인스턴스화
+//                    loginFrame.setVisible(true);      // 로그인 창을 보이도록 설정
+//
+//                    // 현재 창을 닫기
+//                    dispose();  // MasterMain 창을 닫음
+//                }
+//                // "No"를 누르면 아무 동작도 하지 않음
+//                else if (result == JOptionPane.NO_OPTION) {
+//                    // 아무 동작도 하지 않음 (창을 유지)
+//                }
+//            }
+//        });
     }
 
  // DB 연결 메서드
     public Connection connect() {
         String driver = "oracle.jdbc.driver.OracleDriver";
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        String user = "hyemee";
+        String user = "basic";
         String password = "1234";
 
         try {
@@ -327,7 +330,9 @@ public class TrainMenagement extends JFrame {
             
             String sql = "delete from schedule where train_num = ?";
             Connection con = null;
-            PreparedStatement pstmt = con.prepareStatement(sql);
+            con = connect();
+            PreparedStatement pstmt;
+            pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, trainNum); 
             int res = pstmt.executeUpdate();
             if (res > 0) {
@@ -357,7 +362,7 @@ public class TrainMenagement extends JFrame {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                TrainMenagement frame = new TrainMenagement();
+                ddd frame = new ddd();
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
