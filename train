@@ -5,12 +5,13 @@ CREATE TABLE train (
     str_station VARCHAR2(10), -- 출발역
     arr_station VARCHAR2(10) -- 도착역
 );
-select * from train t join schedule s on t.train_num = s.train_num;
+
+
 
 
 CREATE TABLE schedule (
     schedule_num number primary key, -- 시퀀스
-    schedule_id NUMBER(10), -- 일정번호 > 각 기차번호마다 번호가 중복
+    schedule_id NUMBER(10), -- 일정번호 > 각 기차번호마다 번호가 중복 --
     train_num NUMBER(10), -- 기차번호 (FOREIGN KEY로 train 테이블과 연결)
     start_day TIMESTAMP NOT NULL, -- 출발일
     arrive_day TIMESTAMP NOT NULL, -- 도착일
@@ -23,6 +24,7 @@ CREATE TABLE schedule (
 );
 
 
+
 CREATE SEQUENCE schedule_seq -- 스케쥴넘버(중복불가번호)
     START WITH 1
     INCREMENT BY 1
@@ -30,10 +32,12 @@ CREATE SEQUENCE schedule_seq -- 스케쥴넘버(중복불가번호)
     NOCYCLE;
 
 
+
+
 -- 좌석 수 테이블
 create table seatinfo(--일반석의 경우
     train_num number(10),-- 기차 번호
-    schedule_num NUMBER(10),
+    schedule_num NUMBER(10), 
     one_seat_count number(10),-- 1인실 좌석 수
     inside_seat_count number(10), -- 내측 좌석 수
     outside_seat_count number(10), -- 외측 좌석 수
@@ -41,6 +45,8 @@ create table seatinfo(--일반석의 경우
     FOREIGN KEY (train_num) REFERENCES train(train_num), 
     FOREIGN KEY (schedule_num) REFERENCES schedule(schedule_num)
 );
+
+
 
 -- 좌석 예약 테이블 >> 예약시간, 제약조건 추가
 create table reservation(
@@ -53,10 +59,6 @@ reser_user varchar2(100), -- 예약자 이름
 reserved TIMESTAMP not null, -- 예약시간 
 FOREIGN KEY (train_num) REFERENCES train(train_num)
 );
-
-
-
-
 
 
 
@@ -180,3 +182,12 @@ VALUES (1005, 2, 14, 50, 30);
 
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
 VALUES (1005, 3, 13, 55, 32);
+
+
+drop table train;
+drop table seatinfo;
+drop table schedule;
+drop table reservation;
+
+
+
