@@ -33,17 +33,16 @@ CREATE SEQUENCE schedule_seq -- 스케쥴넘버(중복불가번호)
 
 
 
-
 -- 좌석 수 테이블
 create table seatinfo(--일반석의 경우
     train_num number(10),-- 기차 번호
-    schedule_num NUMBER(10), 
+    schedule_num NUMBER(10), -- schedule 고유 번호
     one_seat_count number(10),-- 1인실 좌석 수
     inside_seat_count number(10), -- 내측 좌석 수
     outside_seat_count number(10), -- 외측 좌석 수
     -- seat_category varchar2(10), -- 좌석 카테고리 (예: 특실, 일반석 등) >> 삭제 전부 일반석
     FOREIGN KEY (train_num) REFERENCES train(train_num), 
-    FOREIGN KEY (schedule_num) REFERENCES schedule(schedule_num)
+    FOREIGN KEY (schedule_num) REFERENCES schedule(schedule_num) on delete cascade
 );
 
 
