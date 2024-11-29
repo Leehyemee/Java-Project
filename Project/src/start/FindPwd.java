@@ -2,12 +2,15 @@ package start;
 
 import java.awt.*;
 import java.sql.*;
-
 import javax.swing.*;
 
 public class FindPwd extends JFrame {
 
-    JLabel Id_JL, Phone_JL;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JLabel Id_JL, Phone_JL;
     JTextField Id_TF, Phone_TF;
     JButton FindPwd_BT;
 

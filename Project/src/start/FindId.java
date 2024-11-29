@@ -6,7 +6,11 @@ import javax.swing.*;
 
 public class FindId extends JFrame {
 
-    JLabel Name_JL, Phone_JL;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JLabel Name_JL, Phone_JL;
     JTextField Name_TF, Phone_TF;
     JButton FindId_BT;
 

@@ -1,17 +1,10 @@
 package start;
 
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.Color;
 
 public class MasterMain extends JFrame {
 
@@ -39,11 +32,16 @@ public class MasterMain extends JFrame {
 		setTitle("관리자 메인화면");
 		backgroundImage = new ImageIcon("images/trainbg.jpg");
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 780, 547);
 		setResizable(false);
 		
 		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -86,11 +84,25 @@ public class MasterMain extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // MemMenagement 클래스 실행
                 MemMenagement memMenagementFrame = new MemMenagement();
+                memMenagementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // MemMenagement 창만 닫히도록 설정
                 memMenagementFrame.setVisible(true); // 새 창을 보이도록 설정
             }
         });
         
-     // 로그아웃 버튼 클릭 시 종료 확인 메시지
+        
+        // 기차관리 버튼 클릭 시 TrainManagement 클래스 실행
+        Train_BT.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TrainManagement 클래스 실행
+                TrainManagement trainManagementFrame = new TrainManagement();
+                trainManagementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // TrainManagement 창만 닫히도록 설정
+                trainManagementFrame.setVisible(true); // 새 창을 보이도록 설정
+            }
+        });
+
+        
+        // 로그아웃 버튼 클릭 시 종료 확인 메시지
         Logout_BT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -125,4 +137,5 @@ public class MasterMain extends JFrame {
 
 // 회원관리 버튼 클릭 시 MemMenagement 실행 ++
 // 로그아웃 버튼 - 종료하시겠습니까? Y/N 선택 후 Y-종료, N - 화면 유지++
-// 기차관리 -- 민정님
+// 기차관리 -- 나
+// 회원관리 창을 닫으면 관리자메인도 같이 닫힘 해결하기

@@ -1,18 +1,10 @@
 package start;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.border.*;
+import java.sql.*;
 
 public class SignUp extends JFrame {
 
@@ -34,7 +26,6 @@ public class SignUp extends JFrame {
     private JTextField Phone_TF, Phone_TF2;  // phoneField_2를 인스턴스 변수로 변경
     private JTextField BirthField;
     private JComboBox<String> Email_CB, Phone_CB;
-    private JButton idchb;
     private boolean isIdChecked = false;  // 아이디 중복확인 여부를 저장하는 변수
     
     
@@ -147,7 +138,12 @@ public class SignUp extends JFrame {
         setBounds(100, 100, 600, 797);
         setResizable(false);
         contentPane = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), null);
@@ -317,7 +313,7 @@ public class SignUp extends JFrame {
 		
         Phone_CB = new JComboBox<>();
         Phone_CB.setBackground(new Color(255, 255, 255));
-        Phone_CB.setModel(new DefaultComboBoxModel(new String[] {"선택", "010", "011", "016", "017", "018", "019"}));
+        Phone_CB.setModel(new DefaultComboBoxModel<String>(new String[] {"선택", "010", "011", "016", "017", "018", "019"}));
         Phone_CB.setBounds(205, 521, 62, 23);
         contentPane.add(Phone_CB);
 

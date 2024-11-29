@@ -2,12 +2,7 @@ package start;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import java.sql.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -15,6 +10,10 @@ import javax.swing.table.*;
 
 public class MemMenagement extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Connection con = null;                  // DB와 연결하는 객체
 	PreparedStatement pstmt = null;         // SQL문을 DB에 전송하는 객체
 	ResultSet rs = null;                    // SQL문 실행 결과를 가지고 있는 객체
@@ -34,7 +33,12 @@ public class MemMenagement extends JFrame {
         setBounds(100, 100, 1105, 580);
         setResizable(false);
         contentPane = new JPanel() {
-        	@Override
+        	/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (backgroundImage != null) {
@@ -54,7 +58,7 @@ public class MemMenagement extends JFrame {
         contentPane.add(Logout_BT);
 
         // 테이블 생성 및 설정
-        String[] header = {"ID", "PASSWORD", "BIRTHDATE", "USERNAME", "ADDRESS", "PHONE", "EMAIL", "CREATED_AT", "MEMBER_ID"};
+        String[] header = {"아이디", "비밀번호", "생년월일", "이름", "주소", "핸드폰", "E-MAIL", "가입일자", "회원번호"};
         model = new DefaultTableModel(header, 0);
         table = new JTable(model);
         JScrollPane jsp = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -64,7 +68,7 @@ public class MemMenagement extends JFrame {
         // 검색 관련 ComboBox와 JTextField 설정
         Choice_CB = new JComboBox<String>();
         Choice_CB.setBackground(new Color(255, 255, 255));
-        Choice_CB.setModel(new DefaultComboBoxModel(new String[] {"선택", "전체", "ID", "PASSWORD", "BIRTHDATE", "USERNAME", "ADDRESS", "PHONE", "EMAIL", "CREATED_AT", "MEMBER_ID"}));
+        Choice_CB.setModel(new DefaultComboBoxModel<String>(new String[] {"선택", "전체", "ID", "PASSWORD", "BIRTHDATE", "USERNAME", "ADDRESS", "PHONE", "EMAIL", "CREATED_AT", "MEMBER_ID"}));
         Choice_CB.setBounds(30, 470, 89, 25);  // ComboBox 위치 설정
         contentPane.add(Choice_CB);
 
@@ -347,9 +351,30 @@ public class MemMenagement extends JFrame {
             }
         }
     }
+    
+    public boolean isValidPassword(String password) {
+        // 정규 표현식: 숫자와 영어 포함, 길이 8자리 이상
+        String regex = "^(?=.*[a-zA-Z])(?=.*\\d).{8,}$";
+        return password.matches(regex);
+    }
         // 수정 메서드
     public void updateData(String memberId, String column, String newValue) {
         try {
+        	// 비밀번호 수정일 경우 형식 체크
+            if (column.equals("PASSWORD")) {
+                // 비밀번호가 형식에 맞지 않으면 계속해서 입력을 받도록 함
+                while (!isValidPassword(newValue)) {
+                    JOptionPane.showMessageDialog(this, "비밀번호는 숫자와 영문자가 포함된 8자리 이상이어야 합니다.");
+                    newValue = JOptionPane.showInputDialog(this, "비밀번호를 다시 입력하세요");
+                    
+                    // 취소 버튼을 누르면 종료
+                    if (newValue == null || newValue.trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "비밀번호 수정이 취소되었습니다.");
+                        return;  // 수정 취소
+                    }
+                }
+            }
+
             con = connect();
             if (con != null) {
                 // MEMBER_ID로 사용자를 찾아, 선택된 컬럼만 수정
@@ -358,10 +383,10 @@ public class MemMenagement extends JFrame {
                 pstmt.setString(1, newValue);    // 새로운 값
                 pstmt.setString(2, memberId);    // MEMBER_ID로 업데이트
                 int result = pstmt.executeUpdate();
-                
+
                 if (result > 0) {
                     JOptionPane.showMessageDialog(this, "수정 성공");
-                    
+
                     // 수정된 내용을 테이블에 반영
                     for (int i = 0; i < model.getRowCount(); i++) {
                         if (model.getValueAt(i, 8).equals(memberId)) { // MEMBER_ID 컬럼 비교

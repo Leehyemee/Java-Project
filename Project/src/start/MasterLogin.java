@@ -1,12 +1,7 @@
 package start;
 
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import java.sql.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -49,6 +44,11 @@ public class MasterLogin extends JFrame {
 		setResizable(false);
 		contentPane = new JPanel() {
 		
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
         	protected void paintComponent(Graphics g) {
             super.paintComponent(g);  // 기존의 paintComponent 기능을 유지하면서

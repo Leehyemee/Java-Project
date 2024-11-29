@@ -5,7 +5,11 @@ import javax.swing.*;
 
 public class Login extends JFrame {
 
-    JLabel Id_JL, Pwd_JL;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JLabel Id_JL, Pwd_JL;
     JTextField Id_TF;
     JPasswordField Pwd_TF;
     JButton jbjoin, Login_BT, Join_BT, FindId_BT, FindPwd_BT;
@@ -28,7 +32,12 @@ public class Login extends JFrame {
 
         // 배경 이미지를 설정하는 JPanel 클래스를 만듭니다.
         JPanel backgroundPanel = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 // 배경 이미지를 그립니다. 경로는 본인의 이미지 경로로 수정하세요.
