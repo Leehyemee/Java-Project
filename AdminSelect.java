@@ -69,7 +69,7 @@ public class AdminSelect extends JFrame {
         JPanel selectedPanel = new JPanel(new BorderLayout());
 
         String[] header = 
-            {"열차번호", "타입", "출발역", "도착역", "출발일", "도착일", "요금", "일반석", "유아석", "입석"};
+            {"열차번호", "타입", "일정번호", "출발역", "도착역", "출발일", "도착일", "요금", "일반석", "유아석", "입석"};
 
         model = new DefaultTableModel(header, 0);
         table = new JTable(model);
@@ -136,7 +136,9 @@ public class AdminSelect extends JFrame {
                 String baby_seat = rs.getString("BABY_SEAT");
                 String stand_seat = rs.getString("STAND_SEAT");
                 
-                Object[] data = {train_num, train_type, str_station, arr_station, start_day, arrive_day, money, economy_seat, baby_seat, stand_seat};
+                String schedule_id = rs.getString("schedule_id");
+                
+                Object[] data = {train_num, train_type, schedule_id, str_station, arr_station, start_day, arrive_day, money, economy_seat, baby_seat, stand_seat};
                 model.addRow(data);
             }
         } catch (SQLException e) {
@@ -150,17 +152,16 @@ public class AdminSelect extends JFrame {
             int row = table.getSelectedRow();
             if (row == -1) {
                 JOptionPane.showMessageDialog(null, "삭제할 기차를 선택하세요.");
-                return; // 아무 행도 선택되지 않으면 함수 종료
+                return; 
             }
 
-            // model.getValueAt()을 통해 가져오는 값은 Object이므로 String으로 반환될 수 있음
-            String trainNumStr = model.getValueAt(row, 0).toString();  // 0번째 열의 값을 String으로 받음
-            int trainNum = Integer.parseInt(trainNumStr);  // String을 Integer로 변환
+            String trainNumStr = model.getValueAt(row, 0).toString();
+            int trainNum = Integer.parseInt(trainNumStr);
 
             // 1. schedule 테이블에서 먼저 삭제
             sql = "delete from schedule where train_num = ?";
             pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, trainNum);  // Integer로 변환된 값 사용
+            pstmt.setInt(1, trainNum); 
             int res = pstmt.executeUpdate();
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "일정 삭제 성공");
@@ -168,16 +169,7 @@ public class AdminSelect extends JFrame {
                 JOptionPane.showMessageDialog(null, "일정 삭제 실패");
             }
 
-            // 2. train 테이블에서 삭제
-            sql = "delete from train where train_num = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, trainNum);  // Integer로 변환된 값 사용
-            res = pstmt.executeUpdate();
-            if (res > 0) {
-                JOptionPane.showMessageDialog(null, "기차 삭제 성공");
-            } else {
-                JOptionPane.showMessageDialog(null, "기차 삭제 실패");
-            }
+
 
             // 테이블 UI에서 선택된 행 제거
             model.removeRow(row);
