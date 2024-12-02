@@ -145,43 +145,44 @@ VALUES (1001, 3, 8, 40, 22);
 
 -- 기차 번호 1002의 좌석 정보
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1002, 1, 15, 50, 25);
+VALUES (1002, 4, 15, 50, 25);
 
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1002, 2, 16, 55, 30);
+VALUES (1002, 5, 16, 55, 30);
 
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1002, 3, 14, 60, 28);
+VALUES (1002, 6, 14, 60, 28);
 
 -- 기차 번호 1003의 좌석 정보
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1003, 1, 8, 25, 18);
+VALUES (1003, 7, 8, 25, 18);
 
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1003, 2, 10, 30, 20);
+VALUES (1003, 8, 10, 30, 20);
 
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1003, 3, 12, 35, 22);
+VALUES (1003, 9, 12, 35, 22);
 
 -- 기차 번호 1004의 좌석 정보
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1004, 1, 10, 40, 20);
+VALUES (1004, 10, 10, 40, 20);
 
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1004, 2, 11, 45, 22);
+VALUES (1004, 11, 11, 45, 22);
 
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1004, 3, 9, 50, 23);
+VALUES (1004, 12, 9, 50, 23);
 
 -- 기차 번호 1005의 좌석 정보
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1005, 1, 12, 45, 28);
+VALUES (1005, 13, 12, 45, 28);
 
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1005, 2, 14, 50, 30);
+VALUES (1005, 14, 14, 50, 30);
 
 INSERT INTO seatinfo (train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count)
-VALUES (1005, 3, 13, 55, 32);
+VALUES (1005, 15, 13, 55, 32);
+
 
 
 drop table train;
