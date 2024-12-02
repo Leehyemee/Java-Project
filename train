@@ -49,13 +49,14 @@ create table seatinfo(--일반석의 경우
 
 -- 좌석 예약 테이블 >> 예약시간, 제약조건 추가
 create table reservation(
-reser_num number(10) primary key, --예약번호
-memberid number , -- 회원번호 -- foreign key 제약조건을 걸어야 할 듯
+reser_num number(10) primary key, --예약번호 -- 시퀀스 만들어야 함
+id varchar2(100) , -- 회원번호 -- foreign key 제약조건을 걸어야 할 듯
 train_num number(10) not null, --기차번호
-seat_type varchar2(10) not null, --1인실, 내측좌석, 외측좌석
-seat_num number(10) not null, --좌석번호
+seat_type varchar2(100) not null, --1인실, 내측좌석, 외측좌석
 reser_user varchar2(100), -- 예약자 이름
-reserved TIMESTAMP not null, -- 예약시간 
+reserve_time TIMESTAMP not null, -- 예약시간 (출발시간)
+seat_count number(10) not null, --좌석 수
+reserved_time date not null,-- 예약한 시간
 FOREIGN KEY (train_num) REFERENCES train(train_num)
 );
 
