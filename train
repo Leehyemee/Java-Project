@@ -20,7 +20,7 @@ CREATE TABLE schedule (
     economy_seat NUMBER(3), -- 일반석 좌석 개수 >> 1인, 내측, 외측
     baby_seat NUMBER(3), -- 유아석 좌석 개수
     stand_seat CHAR(1) CHECK (stand_seat IN ('Y', 'N')), -- 입석 좌석 유무
-    FOREIGN KEY (train_num) REFERENCES train(train_num)
+    FOREIGN KEY (train_num) REFERENCES train(train_num) on delete cascade
 );
 
 
