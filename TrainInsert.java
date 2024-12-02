@@ -224,11 +224,11 @@ public class TrainInsert extends JFrame {
 			pstmt.setInt(1, Integer.parseInt(numInput.getText().trim()));
 			rs = pstmt.executeQuery();
 
-			if (!rs.next()) {
+			if (rs.next()) {
 				JOptionPane.showMessageDialog(null, "동일한 기차번호가 존재합니다.");
 				return;
 				
-			} else if(rs.next()) {
+			} else if(!rs.next()) {
 				// 기차 번호가 존재하지 않으면 train 테이블에 삽입
 				String insertTrainSql = "INSERT INTO TRAIN VALUES (?, ?, ?, ?)";
 				pstmt = con.prepareStatement(insertTrainSql);
