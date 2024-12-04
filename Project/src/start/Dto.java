@@ -1,0 +1,121 @@
+package start;
+
+public class Dto {
+	
+	private static Dto d = null;
+
+	private String trainNum;
+	private String start;
+	private String arrive;
+	private String adultCount;
+	private String childCount;
+	private String babyCount;
+	private String seatType1;
+	private String seatType2;
+	private String route;
+	private String trainType;
+	private String startDay;
+	//요일 값은 넘길필요?
+	
+	/* 이름,아이디 추가 */
+	private String name;
+	private String Id;
+
+	public String getId() {
+		return this.Id;
+	}
+
+	public void setId(String Id) {
+		this.Id = Id;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	private String schedule_num;
+
+	public String getSchedule_num() {
+		return this.schedule_num;
+	}
+
+	public void setSchedule_num(String schedule_num) {
+		this.schedule_num = schedule_num;
+	}
+	
+	
+	public String gettrainNum() {
+		return trainNum;
+	}
+	public void settrainNum(String trainNum) {
+		this.trainNum = trainNum;
+	}
+	public String getStart() {
+		return start;
+	}
+	public void setStart(String start) {
+		this.start = start;
+	}
+	public String getArrive() {
+		return arrive;
+	}
+	public void setArrive(String arrive) {
+		this.arrive = arrive;
+	}
+	public String getAdultCount() {
+		return adultCount;
+	}
+	public void setAdultCount(String adultCount) {
+		this.adultCount = adultCount;
+	}
+	public String getChildCount() {
+		return childCount;
+	}
+	public void setChildCount(String childCount) {
+		this.childCount = childCount;
+	}
+	public String getBabyCount() {
+		return babyCount;
+	}
+	public void setBabyCount(String babyCount) {
+		this.babyCount = babyCount;
+	}
+	public String getSeatType1() {
+		return seatType1;
+	}
+	public void setSeatType1(String seatType1) {
+		this.seatType1 = seatType1;
+	}
+	public String getSeatType2() {
+		return seatType2;
+	}
+	public void setSeatType2(String seatType2) {
+		this.seatType2 = seatType2;
+	}
+	public String getRoute() {
+		return route;
+	}
+	public void setRoute(String route) {
+		this.route = route;
+	}
+	public String getTrainType() {
+		return trainType;
+	}
+	public void setTrainType(String trainType) {
+		this.trainType = trainType;
+	}
+	public String getStartDay() {
+		return startDay;
+	}
+	public void setStartDay(String startDay) {
+		this.startDay = startDay;
+	}
+	
+	
+	
+}

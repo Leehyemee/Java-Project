@@ -89,8 +89,16 @@ public class SignUp extends JFrame {
 
     void checkDuplicateID() {
         String userId = Id_TF.getText();  // 아이디 입력 필드에서 텍스트 가져오기
+        
+        // 아이디가 비어있는 경우
         if (userId.isEmpty()) {
             JOptionPane.showMessageDialog(null, "아이디를 입력해주세요.");
+            return;
+        }
+
+        // 아이디가 영어와 숫자를 포함한 6자리 이상인지 확인
+        if (!userId.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{6,}$")) {
+            JOptionPane.showMessageDialog(null, "아이디는 영어와 숫자를 포함한 6자리 이상이어야 합니다.");
             return;
         }
 

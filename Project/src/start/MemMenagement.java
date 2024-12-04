@@ -52,10 +52,10 @@ public class MemMenagement extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JButton Logout_BT = new JButton("로그아웃");
-        Logout_BT.setBackground(new Color(255, 255, 255));
-        Logout_BT.setBounds(965, 470, 89, 25);
-        contentPane.add(Logout_BT);
+        JButton movement_BT = new JButton("메인으로..");
+        movement_BT.setBackground(new Color(255, 255, 255));
+        movement_BT.setBounds(965, 470, 89, 25);
+        contentPane.add(movement_BT);
 
         // 테이블 생성 및 설정
         String[] header = {"아이디", "비밀번호", "생년월일", "이름", "주소", "핸드폰", "E-MAIL", "가입일자", "회원번호"};
@@ -103,6 +103,7 @@ public class MemMenagement extends JFrame {
         contentPane.add(Reset_BT);
         
         JLabel lblNewLabel = new JLabel("회원관리");
+        lblNewLabel.setBackground(new Color(255, 255, 255));
         lblNewLabel.setFont(new Font("굴림", Font.BOLD, 24));
         lblNewLabel.setBounds(30, 33, 107, 34);
         contentPane.add(lblNewLabel);
@@ -208,31 +209,21 @@ public class MemMenagement extends JFrame {
             }
         });
         
-     // 로그아웃 버튼 클릭 시 종료 확인 메시지
-        Logout_BT.addActionListener(new ActionListener() {
+     // "메인으로.." 버튼 이벤트
+        movement_BT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // "종료하시겠습니까?" 메시지 표시
                 int result = JOptionPane.showConfirmDialog(
-                        MemMenagement.this,    // 부모 창
-                        "종료하시겠습니까?", // 메시지
-                        "로그아웃",         // 제목
-                        JOptionPane.YES_NO_OPTION, // Y/N 옵션
-                        JOptionPane.QUESTION_MESSAGE // 질문 아이콘
+                		MemMenagement.this,
+                        "관리자 메인화면으로 이동하시겠습니까??",
+                        "로그아웃",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
                 );
-
-             // "Yes"를 누르면 로그인 화면 실행
                 if (result == JOptionPane.YES_OPTION) {
-                    // Login 클래스 실행
-                    Login loginFrame = new Login();  // Login 클래스를 인스턴스화
-                    loginFrame.setVisible(true);      // 로그인 창을 보이도록 설정
-
-                    // 현재 창을 닫기
-                    dispose();  // MasterMain 창을 닫음
-                }
-                // "No"를 누르면 아무 동작도 하지 않음
-                else if (result == JOptionPane.NO_OPTION) {
-                    // 아무 동작도 하지 않음 (창을 유지)
+                    MasterMain masterMainFrame = new MasterMain(); // MasterMain 창 생성
+                    masterMainFrame.setVisible(true); // MasterMain 창을 보여줌
+                    dispose(); // 현재 TrainManagement 창 종료
                 }
             }
         });

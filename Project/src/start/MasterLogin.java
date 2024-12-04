@@ -5,7 +5,6 @@ import java.sql.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-
 public class MasterLogin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -101,23 +100,28 @@ public class MasterLogin extends JFrame {
 		
 		 // 로그인 버튼 클릭 시 아이디와 비밀번호 확인
         Login_BT.addActionListener(e -> {
-            String ID = MId_TF.getText();  // 입력된 아이디
-            String password = new String(MPwd_PF.getPassword());  // 입력된 비밀번호
+        String ID = MId_TF.getText();  // 입력된 아이디
+        String password = new String(MPwd_PF.getPassword());  // 입력된 비밀번호
 
-            // 데이터베이스 연결
-            connect();
+         // 데이터베이스 연결
+         connect();
 
-            if (checkLogin(ID, password)) {
-                // 로그인 성공 시
-                JOptionPane.showMessageDialog(this, "로그인 성공!");
-                
-             // 로그인 성공 후 MasterMain 클래스 화면을 띄운다
-                MasterMain mainFrame = new MasterMain(); // MasterMain 클래스 인스턴스 생성
-                mainFrame.setVisible(true); // MasterMain 화면을 띄운다
-                this.dispose(); // 로그인 창은 종료
+         // 관리자 아이디가 "admin_"로 시작하는지 확인
+         if (ID.startsWith("admin_")) {
+                if (checkLogin(ID, password)) {
+                    // 로그인 성공 시
+                    JOptionPane.showMessageDialog(this, "로그인 성공!");
+                    
+                    // 로그인 성공 후 MasterMain 클래스 화면을 띄운다
+                    MasterMain mainFrame = new MasterMain(); // MasterMain 클래스 인스턴스 생성
+                    mainFrame.setVisible(true); // MasterMain 화면을 띄운다
+                    this.dispose(); // 로그인 창은 종료
+                } else {
+                    // 로그인 실패 시
+                    JOptionPane.showMessageDialog(this, "아이디 또는 비밀번호가 틀렸습니다.");
+                }
             } else {
-                // 로그인 실패 시
-                JOptionPane.showMessageDialog(this, "아이디 또는 비밀번호가 틀렸습니다.");
+                JOptionPane.showMessageDialog(this, "관리자 아이디로 로그인할 수 없습니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -165,6 +169,3 @@ public class MasterLogin extends JFrame {
 		});
 	}
 }
-
-// 남은 할 것
-// 아이디 비밀번호 db와 비교해서 맞으면 로그인, 틀리면 재시도++

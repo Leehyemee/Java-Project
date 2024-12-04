@@ -26,8 +26,7 @@ public class MasterMain extends JFrame {
 		});
 	}
 
-	
-	
+
 	public MasterMain() {
 		setTitle("관리자 메인화면");
 		backgroundImage = new ImageIcon("images/trainbg.jpg");
@@ -64,16 +63,19 @@ public class MasterMain extends JFrame {
 		panel.setLayout(null);
 		
 		JButton Member_BT = new JButton("회원관리");
+		Member_BT.setFont(new Font("새굴림", Font.PLAIN, 12));
 		Member_BT.setBackground(new Color(255, 255, 255));
 		Member_BT.setBounds(271, 10, 97, 35);
 		panel.add(Member_BT);
 		
 		JButton Train_BT = new JButton("기차관리");
+		Train_BT.setFont(new Font("새굴림", Font.PLAIN, 12));
 		Train_BT.setBackground(new Color(255, 255, 255));
 		Train_BT.setBounds(458, 10, 97, 35);
 		panel.add(Train_BT);
 		
 		JButton Logout_BT = new JButton("로그아웃");
+		Logout_BT.setFont(new Font("새굴림", Font.PLAIN, 12));
 		Logout_BT.setBackground(new Color(255, 255, 255));
 		Logout_BT.setBounds(639, 10, 97, 35);
 		panel.add(Logout_BT);
