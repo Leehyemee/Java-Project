@@ -1,0 +1,18 @@
+// 로그인 버튼 클릭 시
+        Login_BT.addActionListener(e -> {
+            String Id = Id_TF.getText();  // 입력된 아이디
+            String password = new String(Pwd_TF.getPassword());  // 입력된 비밀번호
+
+            // DB에서 아이디와 비밀번호가 일치하는지 확인
+            if (isValidLogin(Id, password)) {
+                JOptionPane.showMessageDialog(this, "로그인 성공");
+                dto = new Dto();
+                dto.setId(Id);
+                new WindowBuilderTest(dto).setVisible(true);
+                this.dispose();
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "아이디나 비밀번호가 일치하지 않습니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        
