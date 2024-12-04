@@ -88,6 +88,7 @@ public class MasterMain extends JFrame {
                 MemMenagement memMenagementFrame = new MemMenagement();
                 memMenagementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // MemMenagement 창만 닫히도록 설정
                 memMenagementFrame.setVisible(true); // 새 창을 보이도록 설정
+                dispose();
             }
         });
         
@@ -100,6 +101,7 @@ public class MasterMain extends JFrame {
                 TrainManagement trainManagementFrame = new TrainManagement();
                 trainManagementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // TrainManagement 창만 닫히도록 설정
                 trainManagementFrame.setVisible(true); // 새 창을 보이도록 설정
+                dispose();
             }
         });
 
@@ -136,8 +138,3 @@ public class MasterMain extends JFrame {
         contentPane.repaint();
 	}
 }
-
-// 회원관리 버튼 클릭 시 MemMenagement 실행 ++
-// 로그아웃 버튼 - 종료하시겠습니까? Y/N 선택 후 Y-종료, N - 화면 유지++
-// 기차관리 -- 나
-// 회원관리 창을 닫으면 관리자메인도 같이 닫힘 해결하기

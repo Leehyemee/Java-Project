@@ -215,7 +215,7 @@ public class TrainManagement extends JFrame {
         
         Hour_CB = new JComboBox<String>();
         Hour_CB.setBackground(new Color(255, 255, 255));
-        Hour_CB.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+        Hour_CB.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
         Hour_CB.setBounds(693, 113, 50, 23);
         addPanel.add(Hour_CB);
         
@@ -227,7 +227,7 @@ public class TrainManagement extends JFrame {
         
         arrHour_CB = new JComboBox<String>();
         arrHour_CB.setBackground(new Color(255, 255, 255));
-        arrHour_CB.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+        arrHour_CB.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
         arrHour_CB.setBounds(693, 172, 50, 23);
         addPanel.add(arrHour_CB);
         

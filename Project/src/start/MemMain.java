@@ -209,7 +209,7 @@ public class MemMain extends JFrame {
 		btnNewButton.setBounds(709, 402, 127, 44);
 		contentPane.add(btnNewButton);
 		
-		JLabel label = new JLabel(dto.getId());
+		JLabel label = new JLabel(dto.getId() + "님");
 		label.setBounds(695, 55, 84, 15);
 		contentPane.add(label);
 		

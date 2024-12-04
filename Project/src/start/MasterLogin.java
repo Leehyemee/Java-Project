@@ -121,7 +121,7 @@ public class MasterLogin extends JFrame {
                     JOptionPane.showMessageDialog(this, "아이디 또는 비밀번호가 틀렸습니다.");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "관리자 아이디로 로그인할 수 없습니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "관리자만 로그인 가능합니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
             }
         });
 
