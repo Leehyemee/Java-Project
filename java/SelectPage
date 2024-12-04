@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.GridLayout;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -18,15 +18,10 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,39 +31,69 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.text.Utilities;
 
-public class selectPage extends JFrame{
+import windowBuilder.selectPage.LinkEditor;
+import windowBuilder.selectPage.LinkRenderer;
+
+public class fffff extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	static Dto dto = null;
+	
 	Connection con = null;                  
 	PreparedStatement pstmt, pstmt2 = null;         
 	ResultSet rs, rs2 = null;                   
-	String sql, sql2 = null;                     
+	String sql, sql2 = null;   
+	
 	
 	DefaultTableModel model;
 	JTable table;
+
 	
-	Dto dto = null;
 	String scheduel_id = null;
 	static String id;
 	
-	public selectPage() {
-		// TODO Auto-generated constructor stub
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					fffff frame = new fffff(dto);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
-	
-	public selectPage(Dto dto) {
 
+	/**
+	 * Create the frame.
+	 */
+	
+	public fffff() {
 		
-		setTitle("기차 조회 화면");
+	}
+	public fffff(Dto dto) {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		
 		id = dto.getId();
-		System.out.println("8888888888888888"+dto.getId());
-		
-		System.out.println("dto_1 >>>" + dto);//같은 주소값을 가져야 함.
 		
 		System.out.println("start >>> " + dto.getStart());
 		
-		JPanel selectedPanel = new JPanel(new BorderLayout());    
+		
+JPanel selectedPanel = new JPanel(new BorderLayout());    
 		
 		JLabel selectTitle = new JLabel("조회 화면");
 		String[] header = 
@@ -121,8 +146,8 @@ public class selectPage extends JFrame{
                 });
             }
         });
-				
 	}
+	
 	Connection connect() {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -587,7 +612,5 @@ trainresult : while(rs.next()) {
         }
         
     }
-	public static void main(String[] args) {
 
-	}
 }
