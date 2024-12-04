@@ -1,0 +1,30 @@
+create table seatinfo(--일반석의 경우
+    train_num number(10),-- 기차 번호
+    schedule_num NUMBER(10), -- 기차 고유 번호(기차 삭제 시 관련 기차의 좌석테이블 삭제)
+    -- schedule_id number(10), -- 기차 운행 번호 () --------------------------------
+    one_seat_count number(10),-- 1인실 좌석 수
+    inside_seat_count number(10), -- 내측 좌석 수
+    outside_seat_count number(10), -- 외측 좌석 수
+    -- seat_category varchar2(10), -- 좌석 카테고리 (예: 특실, 일반석 등) >> 삭제 전부 일반석
+    FOREIGN KEY (train_num) REFERENCES train(train_num), 
+    FOREIGN KEY (schedule_num) REFERENCES schedule(schedule_num) on delete cascade
+    -- foreign key (schedule_id) REFERENCES schedule(schedule_id)--추가사항 -- 참조하려는 컬럼이 중복될 수 있을 경우 참조가 안됨.
+);
+
+create table reservation(
+reser_num number(10) primary key, --예약번호 -- 시퀀스 만들어야 함
+id varchar2(100) , -- 회원아이디 -- foreign key 제약조건을 걸어야 할 듯
+train_num number(10) not null, --기차번호
+seat_type varchar2(100) not null, --1인실, 내측좌석, 외측좌석
+--reser_user varchar2(100), -- 예약자 이름
+reserve_time TIMESTAMP not null, -- 예약시간 (출발시간)
+seat_count number(10) not null, --좌석 수
+reserved_time date not null,-- 예약한 시간
+FOREIGN KEY (train_num) REFERENCES train(train_num)
+);
+
+create SEQUENCE reservation_seq
+    START with 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
