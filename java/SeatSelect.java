@@ -44,7 +44,7 @@ public class SeatSelect extends JFrame {
 	 */
 	public SeatSelect(Dto dto) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 932, 587);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -56,11 +56,16 @@ public class SeatSelect extends JFrame {
 		String[] header = {"좌석 유형", "남은 좌석 수"};
 		
 		JPanel selectedPanel = new JPanel();//layout 삭제함
+		selectedPanel.setBounds(0, 35, 691, 413);
 		JPanel container1 = new JPanel();
-		JPanel container2 = new JPanel(new BorderLayout());
+		container1.setBounds(175, 453, 377, 33);
+		JPanel container2 = new JPanel();
+		container2.setBounds(114, 10, 703, 496);
 		JPanel container3 = new JPanel();
+		container3.setBounds(229, 10, 248, 25);
 		
 		model2 = new DefaultTableModel(header, 0);
+		selectedPanel.setLayout(null);
 		
 		table2 = new JTable(model2);
 
@@ -68,8 +73,9 @@ public class SeatSelect extends JFrame {
 				table2, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		jsp.setBounds(24, 0, 667, 398);
 		
-		selectedPanel.add(jsp, BorderLayout.CENTER);
+		selectedPanel.add(jsp);
 		container3.add(selectTitle);
 		
 
@@ -77,18 +83,20 @@ public class SeatSelect extends JFrame {
 		JLabel buyLable = new JLabel("좌석 수 입력 : ");
 		buyCount = new JTextField(10);
 		String[] type = {"1인석", "내측좌석", "외측좌석"};
+		contentPane.setLayout(null);
 		jComboBox = new JComboBox<>(type);
 
 		container1.add(jComboBox);
 		container1.add(buyLable);
 		container1.add(buyCount);
 		container1.add(buyButton);
+		container2.setLayout(null);
 
-		container2.add(container3,BorderLayout.NORTH);
-		container2.add(selectedPanel, BorderLayout.CENTER);
-		container2.add(container1, BorderLayout.SOUTH);
+		container2.add(container3);
+		container2.add(selectedPanel);
+		container2.add(container1);
 
-		add(container2);
+		getContentPane().add(container2);
 
 
 		buyButton.addActionListener(new ActionListener() {
