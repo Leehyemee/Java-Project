@@ -57,7 +57,7 @@ public class SelectPage extends JFrame {
 	}
 	public SelectPage(Dto dto) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 932, 553);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -68,9 +68,10 @@ public class SelectPage extends JFrame {
 		System.out.println("start >>> " + dto.getStart());
 		
 		
-JPanel selectedPanel = new JPanel(new BorderLayout());    
+		JPanel selectedPanel = new JPanel();    
 		
 		JLabel selectTitle = new JLabel("조회 화면");
+		selectTitle.setBounds(423, 23, 52, 15);
 		String[] header = 
 			{"구 분", "열차번호", "고유번호", "출발시간", "출발", "도착", "일반실", "유아", "입석 가능 여부(Y/N)", "소요시간", "운임요금"};
 		
@@ -82,19 +83,21 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 				table, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		jsp.setBounds(49, 59, 819, 374);
+		selectedPanel.setLayout(null);
 
-		selectedPanel.add(selectTitle, BorderLayout.NORTH);
-		selectedPanel.add(jsp, BorderLayout.CENTER);
+		selectedPanel.add(selectTitle);
+		selectedPanel.add(jsp);
 		
         JPanel backPanel = new JPanel();
         JButton backBtn = new JButton("뒤로가기");
 
         backPanel.add(backBtn);
 
-        setLayout(new BorderLayout());
+        getContentPane().setLayout(new BorderLayout());
 
-		add(selectedPanel, BorderLayout.CENTER);
-        add(backPanel, BorderLayout.SOUTH);
+		getContentPane().add(selectedPanel, BorderLayout.CENTER);
+        getContentPane().add(backPanel, BorderLayout.SOUTH);
 		
 		setBounds(100, 100, 932, 553);
 		
@@ -404,8 +407,6 @@ trainresult : while(rs.next()) {
 				long hours = duration.toHours(); 
 				long minutes = duration.minus(hours, ChronoUnit.HOURS).toMinutes();
 				
-				
-				
 				Object[] data = 
 					{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, baseat, standseat, hours+"시"+minutes+"분",money};
 				
@@ -438,7 +439,6 @@ trainresult : while(rs.next()) {
         public LinkRenderer() {
             label = new JLabel();
             label.setForeground(Color.BLUE);  // 링크 색상 (파란색)
-//            label.setText("<html><u>예약</u></html>");  // 링크처럼 보이게 하려면 HTML을 사용
             label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));  // 마우스 커서를 손 모양으로 변경
         }
 
@@ -511,8 +511,6 @@ trainresult : while(rs.next()) {
             
             //클릭했을 때 콘솔에 기차번호랑 특별실, 일반실 콘솔에 출력
             System.err.println("클릭한 기차번호 : "+trainNum + ", scheduleNum : " + scheduleNum );
-            
-//            new SeatSelect(dto);
             
             return label;
         }
