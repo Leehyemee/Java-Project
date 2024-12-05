@@ -1,3 +1,4 @@
+
 package start;
 
 import java.awt.*;
@@ -51,7 +52,7 @@ public class MemMain extends JFrame {
 		contentPane.add(Reservation_LB);
 
 		JComboBox Adult_CB = new JComboBox();
-		Adult_CB.setModel(new DefaultComboBoxModel(new String[] {"어른1명", "어른2명", "어른3명", "어른4명", "어른5명", "어른6명", "어른7명"}));
+		Adult_CB.setModel(new DefaultComboBoxModel(new String[] {"어른 선택","어른1명", "어른2명", "어른3명", "어른4명", "어른5명", "어른6명", "어른7명"}));
 		Adult_CB.setBounds(204, 119, 125, 26);
 		contentPane.add(Adult_CB);
 		
@@ -62,12 +63,12 @@ public class MemMain extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		JComboBox Kid_CB = new JComboBox();
-		Kid_CB.setModel(new DefaultComboBoxModel(new String[] {"6~12세", "어린이1명", "어린이2명", "어린이3명", "어린이4명", "어린이5명", "어린이6명", "어린이7명"}));
+		Kid_CB.setModel(new DefaultComboBoxModel(new String[] {"6~12세 선택", "어린이1명", "어린이2명", "어린이3명", "어린이4명", "어린이5명", "어린이6명", "어린이7명"}));
 		Kid_CB.setBounds(363, 119, 125, 26);
 		contentPane.add(Kid_CB);
 		
 		JComboBox Kid2_CB = new JComboBox();
-		Kid2_CB.setModel(new DefaultComboBoxModel(new String[] {"6세 미만", "유아 1명", "유아 2명", "유아 3명", "유아 4명", "유아 5명", "유아 6명", "유아 7명"}));
+		Kid2_CB.setModel(new DefaultComboBoxModel(new String[] {"6세 미만 선택", "유아 1명", "유아 2명", "유아 3명", "유아 4명", "유아 5명", "유아 6명", "유아 7명"}));
 		Kid2_CB.setBounds(522, 119, 125, 26);
 		contentPane.add(Kid2_CB);
 		JRadioButton total_LB = new JRadioButton("전체");
@@ -158,7 +159,7 @@ public class MemMain extends JFrame {
 		
 		JComboBox<Object> Month_CB = new JComboBox<Object>();
 		Month_CB.setModel(new DefaultComboBoxModel<Object>(new String[] 
-				{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
+				{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
 		Month_CB.setBounds(286, 383, 51, 23);
 		contentPane.add(Month_CB);
 		
@@ -168,7 +169,7 @@ public class MemMain extends JFrame {
 		
 		JComboBox<Object> Day_CB = new JComboBox<Object>();
 		Day_CB.setModel(new DefaultComboBoxModel<Object>(new String[] 
-				{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16",
+				{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16",
 						"17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
 		Day_CB.setBounds(375, 381, 51, 23);
 		contentPane.add(Day_CB);
@@ -262,7 +263,10 @@ public class MemMain extends JFrame {
 				
 				dto.setStartDay(y+"/"+m+"/"+d);
 								
-				System.out.println("아이디 값을 보자(windowbuilder) : " + dto.getId());
+				if(dto.getAdultCount().contains("선택")||dto.getChildCount().contains("선택")||dto.getBabyCount().contains("선택")) {
+					JOptionPane.showMessageDialog(null, "인원이 선택되지 않았습니다. 다시 시도해주세요.");
+					return;
+				}
 				new SelectPage(dto);
 				
 				dispose();
