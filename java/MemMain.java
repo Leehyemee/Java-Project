@@ -223,8 +223,8 @@ public class MemMain extends JFrame {
 				
 				System.out.println("start 데이터 확인 >>>" + Start_TF.getText());
 				
-				dto.setStart(Start_TF.getText());
-				dto.setArrive(Arr_TF.getText());
+				dto.setStart(Start_TF.getText().trim());
+				dto.setArrive(Arr_TF.getText().trim());
 				dto.setAdultCount((String)Adult_CB.getSelectedItem());
 				dto.setChildCount((String)Kid_CB.getSelectedItem());
 				dto.setBabyCount((String)Kid2_CB.getSelectedItem());
@@ -267,6 +267,10 @@ public class MemMain extends JFrame {
 					JOptionPane.showMessageDialog(null, "인원이 선택되지 않았습니다. 다시 시도해주세요.");
 					return;
 				}
+				if(dto.getArrive().equals("")) {
+					JOptionPane.showMessageDialog(null, "도착역을 입력해주세요");
+					return;
+				}
 				new SelectPage(dto);
 				
 				dispose();
@@ -274,7 +278,3 @@ public class MemMain extends JFrame {
 		});
 	}
 }
-
-// 출발역, 도착역 콤보박스로 변경
-// 시간에 분 추가
-// 그 외 안되는 부분 수정
