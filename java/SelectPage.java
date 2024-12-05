@@ -56,6 +56,7 @@ public class SelectPage extends JFrame {
 		
 	}
 	public SelectPage(Dto dto) {
+		setTitle("예약 가능한 기차 조회");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 932, 553);
 		contentPane = new JPanel();
@@ -69,9 +70,12 @@ public class SelectPage extends JFrame {
 		
 		
 		JPanel selectedPanel = new JPanel();    
+		selectedPanel.setBackground(new Color(243, 249, 198));
 		
 		JLabel selectTitle = new JLabel("조회 화면");
-		selectTitle.setBounds(423, 23, 52, 15);
+		selectTitle.setBounds(409, 26, 83, 28);
+		selectTitle.setBackground(new Color(255, 255, 255));
+		selectTitle.setFont(new Font("굴림", Font.BOLD, 18));
 		String[] header = 
 			{"구 분", "열차번호", "고유번호", "출발시간", "출발", "도착", "일반실", "유아", "입석 가능 여부(Y/N)", "소요시간", "운임요금"};
 		
@@ -83,21 +87,34 @@ public class SelectPage extends JFrame {
 				table, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		jsp.setBounds(49, 59, 819, 374);
+		jsp.setBounds(47, 73, 819, 374);
 		selectedPanel.setLayout(null);
 
 		selectedPanel.add(selectTitle);
 		selectedPanel.add(jsp);
-		
-        JPanel backPanel = new JPanel();
-        JButton backBtn = new JButton("뒤로가기");
-
-        backPanel.add(backBtn);
 
         getContentPane().setLayout(new BorderLayout());
 
 		getContentPane().add(selectedPanel, BorderLayout.CENTER);
-        getContentPane().add(backPanel, BorderLayout.SOUTH);
+		JButton backBtn = new JButton("뒤로가기");
+		backBtn.setBounds(409, 457, 102, 37);
+		selectedPanel.add(backBtn);
+		backBtn.setFont(new Font("굴림", Font.BOLD, 12));
+		backBtn.setBackground(new Color(255, 255, 255));
+		backBtn.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        System.out.println("뒤로가기 버튼 클릭!");
+		        
+		        SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run(){
+		                new MemMain(dto).setVisible(true);
+		                dispose();//뒤로가기 했을 때 기존 창 꺼짐
+		            }
+		        });
+		    }
+		});
 		
 		setBounds(100, 100, 932, 553);
 		
@@ -110,26 +127,12 @@ public class SelectPage extends JFrame {
 		select(dto);
 
         /* 뒤로가기 버튼 */
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("뒤로가기 버튼 클릭!");
-                
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run(){
-                        new MemMain(dto).setVisible(true);
-                        dispose();//뒤로가기 했을 때 기존 창 꺼짐
-                    }
-                });
-            }
-        });
 	}
 	
 	Connection connect() {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "basic";
+		String user = "hyemee";
 		String password = "1234";
 		try {
 			Class.forName(driver);
