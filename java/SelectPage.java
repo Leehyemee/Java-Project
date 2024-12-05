@@ -303,9 +303,10 @@ trainresult : while(rs.next()) {
 	int babyseat = rs.getInt("baby_seat");
 	String standseat = rs.getString("stand_seat");
 	int money = rs.getInt("money");
-	
-	String ecoseat="";
-	if(economyseat>0) ecoseat="일반실";//좌석 수 > 원래는 seatinfo 연계되서 숫자가 입력되어야 함.
+
+	String ecoseat="", baseat = "";
+	if(economyseat>0) {ecoseat="일반실";} else {ecoseat = "좌석 없음";}
+	if(babyseat>0) {baseat=String.valueOf(babyseat);}else {baseat = "좌석 없음";}
 	
     int ecoseatColumn = 6;
     int spseatColumn = 7;
@@ -402,9 +403,9 @@ trainresult : while(rs.next()) {
 				String standseat = rs2.getString("stand_seat");
 				int money = rs2.getInt("money");
 				
-				String ecoseat="",baseat="";
-				if(economyseat>0)ecoseat="일반실";
-				if(babyseat>0)baseat="유아실";
+				String ecoseat="", baseat = "";
+				if(economyseat>0) {ecoseat="일반실";} else {ecoseat = "좌석 없음";}
+				if(babyseat>0) {baseat=String.valueOf(babyseat);}else {baseat = "좌석 없음";}
 				
 				Duration duration = Duration.between(startday.toInstant(), arriveday.toInstant());
 				long hours = duration.toHours(); 
