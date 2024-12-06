@@ -124,8 +124,11 @@ public class MemMain extends JFrame {
 		bg.add(OneWay_RB);
 		bg.add(RoundT_RB);
 		
-		Start_TF = new JTextField();
-		Start_TF.setColumns(10);
+		Start_TF = new JComboBox<String>();;
+		Start_TF.setBackground(new Color(255, 255, 255));
+		Start_TF.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"선택", "서울", "행신", "영등포", "광명", "수원", "천안아산", "오송", "대전", "김천구미", "서대구", "동대구", 
+        				"포항", "경주", "밀양", "울산", "구포", "부산"}));
 		Start_TF.setBounds(204, 274, 133, 23);
 		contentPane.add(Start_TF);
 		
@@ -134,8 +137,11 @@ public class MemMain extends JFrame {
 		lblNewLabel_4.setBounds(87, 272, 74, 26);
 		contentPane.add(lblNewLabel_4);
 		
-		Arr_TF = new JTextField();
-		Arr_TF.setColumns(10);
+		Arr_TF = new JComboBox<String>();
+		Arr_TF.setBackground(new Color(255, 255, 255));
+		Arr_TF.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"선택", "서울", "행신", "영등포", "광명", "수원", "천안아산", "오송", "대전", "김천구미", "서대구", "동대구", 
+        				"포항", "경주", "밀양", "울산", "구포", "부산"}));
 		Arr_TF.setBounds(204, 328, 133, 23);
 		contentPane.add(Arr_TF);
 		
