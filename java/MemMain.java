@@ -10,10 +10,11 @@ import java.awt.event.*;
 public class MemMain extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	Dto dto;
 	private JPanel contentPane;
 	private JTextField Start_TF;
 	private JTextField Arr_TF;
-	static Dto dto;
+	
 
 	/**
 	 * Launch the application.
@@ -22,8 +23,8 @@ public class MemMain extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {//멀티스레드타입으로 진행.
 				try {
-					MemMain frame = new MemMain(dto);
-					frame.setVisible(true);
+					// MemMain frame = new MemMain(userdto);
+					// frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -34,8 +35,8 @@ public class MemMain extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings({ "unchecked", "unchecked" })
-	public MemMain(Dto dto) {
+	//@SuppressWarnings({ "unchecked", "unchecked" })
+	public MemMain(UserDto userdto) {
 		setTitle("예매");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 932, 553);
@@ -196,10 +197,20 @@ public class MemMain extends JFrame {
 		Search_BT.setBounds(754, 446, 127, 44);
 		contentPane.add(Search_BT);
 		
-		JLabel label = new JLabel(dto.getId() + "님의 반갑습니다 ^^");
-		label.setFont(new Font("굴림", Font.BOLD, 12));
-		label.setBounds(600, 55, 179, 15);
-		contentPane.add(label);
+		JButton Mypage_BT = new JButton(userdto.getId() + "님의 마이페이지로");
+		Mypage_BT.setFont(new Font("굴림", Font.BOLD, 12));
+		Mypage_BT.setBounds(692, 56, 189, 15);
+		contentPane.add(Mypage_BT);
+		
+		// JLabel에 MouseListener 추가
+			Mypage_BT.addMouseListener(new MouseAdapter() {
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        // 마이페이지 클래스 열기
+				        new MyPage(userdto); // MyPage는 새로 생성해야 할 클래스
+				        dispose(); // 현재 창 닫기
+				    }
+				});
 		
 		JLabel lblNewLabel_3_1 = new JLabel("열차 종류");
 		lblNewLabel_3_1.setFont(new Font("굴림체", Font.BOLD, 15));
@@ -222,12 +233,13 @@ public class MemMain extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				System.out.println("start 데이터 확인 >>>" + Start_TF.getText());
-				
+				dto = new Dto();
 				dto.setStart(Start_TF.getText().trim());
 				dto.setArrive(Arr_TF.getText().trim());
 				dto.setAdultCount((String)Adult_CB.getSelectedItem());
 				dto.setChildCount((String)Kid_CB.getSelectedItem());
 				dto.setBabyCount((String)Kid2_CB.getSelectedItem());
+				dto.setId(userdto.getId());
 				
 				//선택한 기차 타입(라디오버튼)
 				String selectedTrainType = "";
