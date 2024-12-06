@@ -1,48 +1,24 @@
-package windowBuilder;
+package start;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.*;
 
-import windowBuilder.selectPage.LinkEditor;
-import windowBuilder.selectPage.LinkRenderer;
+public class SelectPage extends JFrame {
 
-public class fffff extends JFrame {
-
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	static Dto dto = null;
+	Dto dto;
+	UserDto userdDto;
 	
 	Connection con = null;                  
 	PreparedStatement pstmt, pstmt2 = null;         
@@ -64,8 +40,8 @@ public class fffff extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					fffff frame = new fffff(dto);
-					frame.setVisible(true);
+					// SelectPage frame = new SelectPage(dto);
+					//. frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -77,25 +53,31 @@ public class fffff extends JFrame {
 	 * Create the frame.
 	 */
 	
-	public fffff() {
+	public SelectPage() {
 		
 	}
-	public fffff(Dto dto) {
+	
+	public SelectPage(Dto dto) {
+		id = dto.getId();
+		System.out.println("id >>> " + id);
+		setTitle("예약 가능한 기차 조회");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 932, 553);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		
-		id = dto.getId();
-		
 		System.out.println("start >>> " + dto.getStart());
 		
 		
-JPanel selectedPanel = new JPanel(new BorderLayout());    
+		JPanel selectedPanel = new JPanel();    
+		selectedPanel.setBackground(new Color(243, 249, 198));
 		
 		JLabel selectTitle = new JLabel("조회 화면");
+		selectTitle.setBounds(409, 26, 83, 28);
+		selectTitle.setBackground(new Color(255, 255, 255));
+		selectTitle.setFont(new Font("굴림", Font.BOLD, 18));
 		String[] header = 
 			{"구 분", "열차번호", "고유번호", "출발시간", "출발", "도착", "일반실", "유아", "입석 가능 여부(Y/N)", "소요시간", "운임요금"};
 		
@@ -107,19 +89,34 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 				table, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		jsp.setBounds(47, 73, 819, 374);
+		selectedPanel.setLayout(null);
 
-		selectedPanel.add(selectTitle, BorderLayout.NORTH);
-		selectedPanel.add(jsp, BorderLayout.CENTER);
-		
-        JPanel backPanel = new JPanel();
-        JButton backBtn = new JButton("뒤로가기");
+		selectedPanel.add(selectTitle);
+		selectedPanel.add(jsp);
 
-        backPanel.add(backBtn);
+        getContentPane().setLayout(new BorderLayout());
 
-        setLayout(new BorderLayout());
-
-		add(selectedPanel, BorderLayout.CENTER);
-        add(backPanel, BorderLayout.SOUTH);
+		getContentPane().add(selectedPanel, BorderLayout.CENTER);
+		JButton backBtn = new JButton("뒤로가기");
+		backBtn.setBounds(409, 457, 102, 37);
+		selectedPanel.add(backBtn);
+		backBtn.setFont(new Font("굴림", Font.BOLD, 12));
+		backBtn.setBackground(new Color(255, 255, 255));
+		backBtn.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        System.out.println("뒤로가기 버튼 클릭!");
+		        
+		        SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run(){
+		                new MemMain(userdDto).setVisible(true);
+		                dispose();//뒤로가기 했을 때 기존 창 꺼짐
+		            }
+		        });
+		    }
+		});
 		
 		setBounds(100, 100, 932, 553);
 		
@@ -132,26 +129,12 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 		select(dto);
 
         /* 뒤로가기 버튼 */
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("뒤로가기 버튼 클릭!");
-                
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run(){
-                        new WindowBuilderTest(dto).setVisible(true);
-                        dispose();//뒤로가기 했을 때 기존 창 꺼짐
-                    }
-                });
-            }
-        });
 	}
 	
 	Connection connect() {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "basic";
+		String user = "hyemee";
 		String password = "1234";
 		try {
 			Class.forName(driver);
@@ -163,12 +146,13 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 		return con;
 	} 
 	
+	@SuppressWarnings("unused")
 	void select(Dto dto) {
 		System.out.println("select문 들어옴 :: " + dto.getStart());
 		
 		if(dto.getStart().equals("")) {
 			JOptionPane.showMessageDialog(this, "출발역을 입력해주세요");
-			new WindowBuilderTest(dto);
+			new MemMain(userdDto);
 			return;
 		}
 		
@@ -205,30 +189,38 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 				
 				rs = pstmt.executeQuery();
 				
-			//도착역와 출발역, 기차타입을 입력했을 경우
+				//도착역와 출발역, 기차타입을 입력했을 경우
 			}else if(!dto.getStart().equals("")&&!dto.getArrive().equals("")&&
 					!dto.getTrainType().equals("전체")&&dto.getRoute().equals("직통")) {
 				
-				System.out.println("****도착지와 출발역 기차타입을 입력했을 경우");
-				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM where str_station=? and arr_station=? and t.train_type = ?";
+				if(dto.getTrainType().equals("KTX/SRT")) {
+				
+				System.err.println(dto.getTrainType());
+				
+				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM where str_station=? and arr_station=? and t.train_type in ('KTX','SRT')";
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, dto.getStart());
+				pstmt.setString(2, dto.getArrive());
+				
+				rs = pstmt.executeQuery();
+				
+				}else if(dto.getTrainType().equals("새마을호")){
+					
+				System.out.println("****도착지와 출발역 기차타입을 입력했을 경우---------------");
+				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM where str_station=? and arr_station=? and t.train_type = '새마을호'";
 				pstmt = con.prepareStatement(sql);
 				
 				String[] c = dto.getTrainType().split("/");
 				
 				pstmt.setString(1, dto.getStart());
 				pstmt.setString(2, dto.getArrive());
-				pstmt.setString(3, c[0]);
 				
 				System.err.println(dto.getStart());
 				System.err.println(dto.getArrive());
-				System.err.println(c[0]); // <<원인
 				
 				rs = pstmt.executeQuery();
 				
-				if(!rs.next()||rs.next()) {//구분에 KTX/SRT 가 되있어서 분리
-					pstmt.setString(3, c[1]);
-					
-					rs = pstmt.executeQuery();
 				}
 				
 			//출발역과 기차타입을 입력했을 경우
@@ -272,90 +264,123 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 			}else {
 				JOptionPane.showMessageDialog(null, "제대로 입력되지 않았습니다. 다시 입력해주세요");
 				this.dispose();
-				new WindowBuilderTest(dto);
+				new MemMain(userdDto);
 			}
 			
 trainresult : while(rs.next()) {
-				
-				System.out.println("select문 진입");
-				
-				String train_num = rs.getString("train_num");
-				
-				String scheduleId = rs.getString("schedule_id");
-				
-				dto.settrainNum(train_num);
+	
+	System.out.println("select문 진입");
+	
+	String train_num = rs.getString("train_num");
+	
+	String scheduleId = rs.getString("schedule_id");
+	
+	dto.settrainNum(train_num);
 
-				String strstation = rs.getString("str_station");
-				String schedule_id = rs.getString("schedule_id");
-				
-				//java.sql.Date가 날짜 부분만 포함하고 시간 정보를 무시 timestemp 타입으로 가져와야
-				Timestamp startday = rs.getTimestamp("start_day");
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String startdaytime = sdf.format(startday);
-				
-				Timestamp arriveday = rs.getTimestamp("arrive_day");
-				String arrivedayttime = sdf.format(arriveday);
-				
-				//도착시간 - 출발시간
-				Duration duration = Duration.between(startday.toInstant(), arriveday.toInstant());
-				long hours = duration.toHours(); 
-				long minutes = duration.minus(hours, ChronoUnit.HOURS).toMinutes();
-				
-                String schedule_num = rs.getString("schedule_num");
+	String strstation = rs.getString("str_station");
+	String schedule_id = rs.getString("schedule_id");
+	
+	//java.sql.Date가 날짜 부분만 포함하고 시간 정보를 무시 timestemp 타입으로 가져와야
+	Timestamp startday = rs.getTimestamp("start_day");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	String startdaytime = sdf.format(startday);
+	
+	Timestamp arriveday = rs.getTimestamp("arrive_day");
+	String arrivedayttime = sdf.format(arriveday);
+	
+	//도착시간 - 출발시간
+	Duration duration = Duration.between(startday.toInstant(), arriveday.toInstant());
+	long hours = duration.toHours(); 
+	long minutes = duration.minus(hours, ChronoUnit.HOURS).toMinutes();
+	
+    String schedule_num = rs.getString("schedule_num");
 
-				System.out.println("duration ::: " + duration);
-				System.out.println("hours ::: " + hours);
-				System.out.println("minutes ::: " + minutes);
-				
-				String arrstation = rs.getString("arr_station");
-				
-				int economyseat = rs.getInt("economy_seat");
-				int babyseat = rs.getInt("baby_seat");
-				String standseat = rs.getString("stand_seat");
-				int money = rs.getInt("money");
-				
-				String ecoseat="";
-				if(economyseat>0) ecoseat="일반실";//좌석 수 > 원래는 seatinfo 연계되서 숫자가 입력되어야 함.
-				
-		        int ecoseatColumn = 6;
-		        int spseatColumn = 7;
+	System.out.println("duration ::: " + duration);
+	System.out.println("hours ::: " + hours);
+	System.out.println("minutes ::: " + minutes);
+	
+	String arrstation = rs.getString("arr_station");
+	
+	int economyseat = rs.getInt("economy_seat");
+	int babyseat = rs.getInt("baby_seat");
+	String standseat = rs.getString("stand_seat");
+	int money = rs.getInt("money");
+	
+	String ecoseat="";
+	if(economyseat>0) ecoseat="일반실";//좌석 수 > 원래는 seatinfo 연계되서 숫자가 입력되어야 함.
+	
+    int ecoseatColumn = 6;
+    int spseatColumn = 7;
 
-		        // 링크 렌더러 설정
-		        table.getColumnModel().getColumn(ecoseatColumn).setCellRenderer(new LinkRenderer());
-		        table.getColumnModel().getColumn(spseatColumn).setCellRenderer(new LinkRenderer());
+    // 링크 렌더러 설정
+    table.getColumnModel().getColumn(ecoseatColumn).setCellRenderer(new LinkRenderer());
+    table.getColumnModel().getColumn(spseatColumn).setCellRenderer(new LinkRenderer());
 
-		        // 링크 편집기 설정 (링크 클릭 시 새 창 열기)
-		        table.getColumnModel().getColumn(ecoseatColumn).setCellEditor(new LinkEditor(new JCheckBox()));
-		        table.getColumnModel().getColumn(spseatColumn).setCellEditor(new LinkEditor(new JCheckBox()));
+    // 링크 편집기 설정 (링크 클릭 시 새 창 열기)
+    table.getColumnModel().getColumn(ecoseatColumn).setCellEditor(new LinkEditor(new JCheckBox()));
+    table.getColumnModel().getColumn(spseatColumn).setCellEditor(new LinkEditor(new JCheckBox()));
 
-				
-				Object[] data = 
-					{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, babyseat, standseat, hours+"시"+minutes+"분",money};
-				
+    
+    String d = dto.getStartDay();
+    d = d.replace("/0/", "/1/");
+    d = d.replace("/00", "/01"); 
+    d += " 00:00";
+    
+    System.out.println("전달받은 시간 :::::: "+d);
+    
+    SimpleDateFormat sf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
-				System.out.println("시간형식확인s"+startdaytime);
-				System.out.println("시간형식확인a"+arrivedayttime);
-				
-				model.addRow(data);
-				
-				table.setDefaultEditor(Object.class, null);
-				
-				table.addMouseListener(new MouseAdapter() {
-				    @Override
-				    public void mouseClicked(MouseEvent e) {
-				        int row = table.rowAtPoint(e.getPoint());
-				        int column = table.columnAtPoint(e.getPoint());
+    Object[] data = null;
+    try {
+        // 문자열을 Date 객체로 파싱
+        Date inputDate = sf.parse(d);
 
-				        if (column == ecoseatColumn || column == spseatColumn) {
-				            LinkEditor editor = (LinkEditor) table.getCellEditor(row, column);
-				            if (editor != null) {
-				                editor.handlinkclick(column);
-				            }
-				        }
-				    }
-				});
+        // Date 객체를 원하는 형식으로 출력
+        String formattedDate = sf.format(inputDate);
+        
+        System.out.println(formattedDate);  // 출력: 2024/01/01 00:00
+        
+        
+    	if(startday.after(inputDate)) {
 
-			}
+    		
+    		data = new Object[]
+    			{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, babyseat, standseat, hours+"시"+minutes+"분",money};
+    		
+    	}	
+    
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+	
+   
+    
+
+	System.out.println("시간형식확인s"+startdaytime);
+	System.out.println("시간형식확인a"+arrivedayttime);
+	
+	if(data!=null) {
+		model.addRow(data);
+	}
+	
+	table.setDefaultEditor(Object.class, null);
+	
+	table.addMouseListener(new MouseAdapter() {
+	    @Override
+	    public void mouseClicked(MouseEvent e) {
+	        int row = table.rowAtPoint(e.getPoint());
+	        int column = table.columnAtPoint(e.getPoint());
+
+	        if (column == ecoseatColumn || column == spseatColumn) {
+	            LinkEditor editor = (LinkEditor) table.getCellEditor(row, column);
+	            if (editor != null) {
+	                editor.handlinkclick(column);
+	            }
+	        }
+	    }
+	});
+
+}
 
 	if(dto.getRoute().equals("왕복")) {
 		
@@ -386,8 +411,6 @@ trainresult : while(rs.next()) {
 				Duration duration = Duration.between(startday.toInstant(), arriveday.toInstant());
 				long hours = duration.toHours(); 
 				long minutes = duration.minus(hours, ChronoUnit.HOURS).toMinutes();
-				
-				
 				
 				Object[] data = 
 					{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, baseat, standseat, hours+"시"+minutes+"분",money};
@@ -421,7 +444,6 @@ trainresult : while(rs.next()) {
         public LinkRenderer() {
             label = new JLabel();
             label.setForeground(Color.BLUE);  // 링크 색상 (파란색)
-//            label.setText("<html><u>예약</u></html>");  // 링크처럼 보이게 하려면 HTML을 사용
             label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));  // 마우스 커서를 손 모양으로 변경
         }
 
@@ -445,7 +467,13 @@ trainresult : while(rs.next()) {
 	
 	
     public static class LinkEditor extends DefaultCellEditor {
-    	Dto dto;
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+
+		Dto dto;
     	
     	
     	private String trainNum;
@@ -489,8 +517,6 @@ trainresult : while(rs.next()) {
             //클릭했을 때 콘솔에 기차번호랑 특별실, 일반실 콘솔에 출력
             System.err.println("클릭한 기차번호 : "+trainNum + ", scheduleNum : " + scheduleNum );
             
-//            new SeatSelect(dto);
-            
             return label;
         }
 
@@ -517,7 +543,7 @@ trainresult : while(rs.next()) {
         		if (input != null && !input.trim().isEmpty()) {
         			System.err.println("showInputMessege 값 :  " + input + "/ scheduleNum 값" + scheduleNum);
         			
-        			selectPage se = new selectPage();
+        			SelectPage se = new SelectPage();
         			Connection con = se.connect();
         			
         			dto = new Dto();
@@ -542,7 +568,7 @@ trainresult : while(rs.next()) {
         				pstmt.setString(1, input);
         				pstmt.setString(2, scheduleNum);
         				
-        				System.out.println(dto.getId());
+        				System.out.println(id);
         				
         				
         				int res = pstmt.executeUpdate();
@@ -571,7 +597,7 @@ trainresult : while(rs.next()) {
         				
         				System.out.println("어디까지 오니4");
         				System.out.println("reservation_seq.nextval");
-        				System.out.println(dto.getId());
+        				System.out.println(id);
         				System.out.println(trainNum);
         				System.out.println(dto.getName());
         				System.out.println(startDatTime);
@@ -581,11 +607,18 @@ trainresult : while(rs.next()) {
         				res = pstmt.executeUpdate();
         				System.out.println("어디까지 오니5");
         				
+        				con.commit();
+        				con.setAutoCommit(true);
+        				
+        				
         				if(res>0) {
         					JOptionPane.showMessageDialog(null, "구매에 성공하였습니다");
         				}else {
         					JOptionPane.showMessageDialog(null, "구매에 실패하였습니다.");
         				}
+
+        				new OrderPage(dto).setVisible(true);
+        				
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
 					}
