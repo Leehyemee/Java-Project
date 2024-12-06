@@ -238,10 +238,10 @@ public class MemMain extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				System.out.println("start 데이터 확인 >>>" + Start_TF.getText());
+				System.out.println("start 데이터 확인 >>>" + (String)Start_TF.getSelectedItem());
 				dto = new Dto();
-				dto.setStart(Start_TF.getText().trim());
-				dto.setArrive(Arr_TF.getText().trim());
+				dto.setStart((String)Start_TF.getSelectedItem());
+				dto.setArrive((String)Arr_TF.getSelectedItem());
 				dto.setAdultCount((String)Adult_CB.getSelectedItem());
 				dto.setChildCount((String)Kid_CB.getSelectedItem());
 				dto.setBabyCount((String)Kid2_CB.getSelectedItem());
