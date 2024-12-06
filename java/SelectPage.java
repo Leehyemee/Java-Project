@@ -303,9 +303,9 @@ trainresult : while(rs.next()) {
 	int babyseat = rs.getInt("baby_seat");
 	String standseat = rs.getString("stand_seat");
 	int money = rs.getInt("money");
-
+	
 	String ecoseat="", baseat = "";
-	if(economyseat>0) {ecoseat="일반실";} else {ecoseat = "좌석 없음";}
+	if(economyseat>0) {ecoseat="선택";} else {ecoseat = "좌석 없음";}
 	if(babyseat>0) {baseat=String.valueOf(babyseat);}else {baseat = "좌석 없음";}
 	
     int ecoseatColumn = 6;
@@ -339,12 +339,10 @@ trainresult : while(rs.next()) {
         
         System.out.println(formattedDate);  // 출력: 2024/01/01 00:00
         
-        
     	if(startday.after(inputDate)) {
 
-    		
     		data = new Object[]
-    			{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, babyseat, standseat, hours+"시"+minutes+"분",money};
+    			{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, baseat, standseat, hours+"시"+minutes+"분",money};
     		
     	}	
     
@@ -381,8 +379,9 @@ trainresult : while(rs.next()) {
 
 }
 
-	if(dto.getRoute().equals("왕복")) {
 		
+		if(dto.getRoute().equals("왕복")) {
+			
 			while(rs2.next()) {//왕복인 경우 > 도착역과 출발역을 반대로 함.
 				
 				System.out.println("왕복일 경우 rs2.next() 진입");
@@ -404,7 +403,7 @@ trainresult : while(rs.next()) {
 				int money = rs2.getInt("money");
 				
 				String ecoseat="", baseat = "";
-				if(economyseat>0) {ecoseat="일반실";} else {ecoseat = "좌석 없음";}
+				if(economyseat>0) {ecoseat="선택";} else {ecoseat = "좌석 없음";}
 				if(babyseat>0) {baseat=String.valueOf(babyseat);}else {baseat = "좌석 없음";}
 				
 				Duration duration = Duration.between(startday.toInstant(), arriveday.toInstant());
@@ -416,7 +415,6 @@ trainresult : while(rs.next()) {
 				
 				model.addRow(data);
 				table.setDefaultEditor(Object.class, null);
-				
 				}
 			}
 			
@@ -432,7 +430,7 @@ trainresult : while(rs.next()) {
 				if(rs2!=null)rs2.close();
 				if(pstmt2!=null)pstmt2.close(); 
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
 		}
 	}
