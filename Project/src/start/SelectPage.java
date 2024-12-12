@@ -4,8 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
@@ -15,7 +16,8 @@ public class SelectPage extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	static Dto dto = null;
+	Dto dto;
+	UserDto userDto;
 	
 	Connection con = null;                  
 	PreparedStatement pstmt, pstmt2 = null;         
@@ -37,8 +39,8 @@ public class SelectPage extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SelectPage frame = new SelectPage(dto);
-					frame.setVisible(true);
+					// SelectPage frame = new SelectPage(dto);
+					//. frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -53,22 +55,24 @@ public class SelectPage extends JFrame {
 	public SelectPage() {
 		
 	}
+	
 	public SelectPage(Dto dto) {
+		id = dto.getId();
+		setTitle("예약 가능한 기차 조회");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 932, 553);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		
-		id = dto.getId();
-		
-		System.out.println("start >>> " + dto.getStart());
-		
-		
-JPanel selectedPanel = new JPanel(new BorderLayout());    
+		JPanel selectedPanel = new JPanel();    
+		selectedPanel.setBackground(new Color(243, 249, 198));
 		
 		JLabel selectTitle = new JLabel("조회 화면");
+		selectTitle.setBounds(409, 26, 83, 28);
+		selectTitle.setBackground(new Color(255, 255, 255));
+		selectTitle.setFont(new Font("굴림", Font.BOLD, 18));
 		String[] header = 
 			{"구 분", "열차번호", "고유번호", "출발시간", "출발", "도착", "일반실", "유아", "입석 가능 여부(Y/N)", "소요시간", "운임요금"};
 		
@@ -80,19 +84,35 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 				table, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		jsp.setBounds(47, 73, 819, 374);
+		selectedPanel.setLayout(null);
 
-		selectedPanel.add(selectTitle, BorderLayout.NORTH);
-		selectedPanel.add(jsp, BorderLayout.CENTER);
-		
-        JPanel backPanel = new JPanel();
-        JButton backBtn = new JButton("뒤로가기");
+		selectedPanel.add(selectTitle);
+		selectedPanel.add(jsp);
 
-        backPanel.add(backBtn);
+        getContentPane().setLayout(new BorderLayout());
 
-        setLayout(new BorderLayout());
-
-		add(selectedPanel, BorderLayout.CENTER);
-        add(backPanel, BorderLayout.SOUTH);
+		getContentPane().add(selectedPanel, BorderLayout.CENTER);
+		JButton backBtn = new JButton("뒤로가기");
+		backBtn.setBounds(409, 457, 102, 37);
+		selectedPanel.add(backBtn);
+		backBtn.setFont(new Font("굴림", Font.BOLD, 12));
+		backBtn.setBackground(new Color(255, 255, 255));
+		backBtn.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        
+		        SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run(){
+                    	userDto = new UserDto();
+                    	userDto.setId(dto.getId());
+                        new MemMain(userDto).setVisible(true);
+                        dispose();	//뒤로가기 했을 때 기존 창 꺼짐
+		            }
+		        });
+		    }
+		});
 		
 		setBounds(100, 100, 932, 553);
 		
@@ -105,20 +125,6 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 		select(dto);
 
         /* 뒤로가기 버튼 */
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("뒤로가기 버튼 클릭!");
-                
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run(){
-                        new MemMain(dto).setVisible(true);
-                        dispose();//뒤로가기 했을 때 기존 창 꺼짐
-                    }
-                });
-            }
-        });
 	}
 	
 	Connection connect() {
@@ -138,28 +144,23 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 	
 	@SuppressWarnings("unused")
 	void select(Dto dto) {
-		System.out.println("select문 들어옴 :: " + dto.getStart());
 		
 		if(dto.getStart().equals("")) {
 			JOptionPane.showMessageDialog(this, "출발역을 입력해주세요");
-			new MemMain(dto);
+			new MemMain(userDto);
 			return;
 		}
 		
 		try {
-			
-			System.out.println("---- select에 들어온 사용자가 입력한 정보 ----");
-			System.out.println(dto.getStart());
-			System.out.println(dto.getArrive());
-			System.out.println(dto.getRoute());
-			System.out.println(dto.getTrainType());
-			System.out.println("---- ---- ----");
+//			System.out.println("---- select에 들어온 사용자가 입력한 정보 ----");
 			//출발역만 입력했을 경우(직통 기본값)
 			if(!dto.getStart().equals("")&&	dto.getArrive().equals("")&&
 					dto.getRoute().equals("직통")&&dto.getTrainType().equals("전체")) {
 				System.out.println("출발역만 입력");
 				
-				sql = "select t.TRAIN_NUM, schedule_num, t.STR_STATION, t.ARR_STATION, s.ECONOMY_SEAT, s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM where t.STR_STATION=?";
+				sql = "select t.TRAIN_NUM, schedule_num, t.STR_STATION, t.ARR_STATION, s.ECONOMY_SEAT, "
+						+ "s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id "
+						+ "from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM where t.STR_STATION=?";
 				
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, dto.getStart());
@@ -171,7 +172,10 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 					dto.getRoute().equals("직통")&&dto.getTrainType().equals("전체")) {
 				
 				System.out.println("****출발역과 도착역을 입력했을 경우");
-				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM  where t.str_station=? and t.arr_station=?";
+				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, "
+						+ "s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id "
+						+ "from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM  where t.str_station=? "
+						+ "and t.arr_station=?";
 				
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, dto.getStart());
@@ -179,38 +183,52 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 				
 				rs = pstmt.executeQuery();
 				
-			//도착역와 출발역, 기차타입을 입력했을 경우
+				//도착역와 출발역, 기차타입을 입력했을 경우
 			}else if(!dto.getStart().equals("")&&!dto.getArrive().equals("")&&
 					!dto.getTrainType().equals("전체")&&dto.getRoute().equals("직통")) {
 				
-				System.out.println("****도착지와 출발역 기차타입을 입력했을 경우");
-				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM where str_station=? and arr_station=? and t.train_type = ?";
+				if(dto.getTrainType().equals("KTX/SRT")) {
+				
+				System.err.println(dto.getTrainType());
+				
+				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, "
+						+ "s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id "
+						+ "from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM where str_station=? "
+						+ "and arr_station=? and t.train_type in ('KTX','SRT')";
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, dto.getStart());
+				pstmt.setString(2, dto.getArrive());
+				
+				rs = pstmt.executeQuery();
+				
+				}else if(dto.getTrainType().equals("새마을호")){
+					
+				System.out.println("****도착지와 출발역 기차타입을 입력했을 경우---------------");
+				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id from train t join SCHEDULE s on t.train_num = s.TRAIN_NUM where str_station=? and arr_station=? and t.train_type = '새마을호'";
 				pstmt = con.prepareStatement(sql);
 				
 				String[] c = dto.getTrainType().split("/");
 				
 				pstmt.setString(1, dto.getStart());
 				pstmt.setString(2, dto.getArrive());
-				pstmt.setString(3, c[0]);
 				
-				System.err.println(dto.getStart());
-				System.err.println(dto.getArrive());
-				System.err.println(c[0]); // <<원인
+//				System.err.println(dto.getStart());
+//				System.err.println(dto.getArrive());
 				
 				rs = pstmt.executeQuery();
 				
-				if(!rs.next()||rs.next()) {//구분에 KTX/SRT 가 되있어서 분리
-					pstmt.setString(3, c[1]);
-					
-					rs = pstmt.executeQuery();
 				}
 				
 			//출발역과 기차타입을 입력했을 경우
 			}else if(!dto.getStart().equals("")&&dto.getArrive().equals("")&&
 					!dto.getTrainType().equals("전체")&&dto.getRoute().equals("직통")) {
 				
-				System.out.println("기차타입과 출발역만 입력했을 경우.");
-				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id  from train t join schedule s on t.train_num = s.train_num where str_station = ? and train_type = ?";
+//				System.out.println("기차타입과 출발역만 입력했을 경우.");
+				sql = "select t.TRAIN_NUM, t.STR_STATION, schedule_num, t.ARR_STATION, s.ECONOMY_SEAT, "
+						+ "s.BABY_SEAT, s.STAND_SEAT, s.START_DAY, s.ARRIVE_DAY, s.MONEY, s.schedule_id "
+						+ "from train t join schedule s on t.train_num = s.train_num where str_station = ? "
+						+ "and train_type = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, dto.getStart());
 				pstmt.setString(2, dto.getTrainType());
@@ -221,16 +239,8 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 			}else if(!dto.getStart().equals("")&&!dto.getArrive().equals("")&&
 					dto.getRoute().equals("왕복")) {
 				
-				System.out.println("****도착지와 출발역, 기차타입, 루트(환승,왕복)를 정했을 경우");
-				
-					System.err.println("왕복쿼리문에 진입");
-
 					sql = "select * from train t join schedule s on t.train_num = s.train_num where str_station = ? and arr_station = ?";
 					sql2 = "select * from train t join schedule s on t.train_num = s.train_num where str_station = ? and arr_station = ?";
-					
-					System.out.println("--------"+sql);
-					System.out.println("--------"+dto.getStart());
-					System.out.println("--------"+dto.getArrive());
 					
 					pstmt = con.prepareStatement(sql);
 					
@@ -246,12 +256,10 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 			}else {
 				JOptionPane.showMessageDialog(null, "제대로 입력되지 않았습니다. 다시 입력해주세요");
 				this.dispose();
-				new MemMain(dto);
+				new MemMain(userDto);
 			}
 			
-				trainresult : while(rs.next()) {
-				
-				System.out.println("select문 진입");
+			trainresult : while(rs.next()) {
 				
 				String train_num = rs.getString("train_num");
 				
@@ -275,11 +283,7 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 				long hours = duration.toHours(); 
 				long minutes = duration.minus(hours, ChronoUnit.HOURS).toMinutes();
 				
-                String schedule_num = rs.getString("schedule_num");
-
-				System.out.println("duration ::: " + duration);
-				System.out.println("hours ::: " + hours);
-				System.out.println("minutes ::: " + minutes);
+			    String schedule_num = rs.getString("schedule_num");
 				
 				String arrstation = rs.getString("arr_station");
 				
@@ -288,29 +292,55 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 				String standseat = rs.getString("stand_seat");
 				int money = rs.getInt("money");
 				
-				String ecoseat="";
-				if(economyseat>0) ecoseat="일반실";//좌석 수 > 원래는 seatinfo 연계되서 숫자가 입력되어야 함.
+				String ecoseat="", baseat = "";
+				if(economyseat>0) {ecoseat="선택";} else {ecoseat = "좌석 없음";}
+				if(babyseat>0) {baseat=String.valueOf(babyseat);}else {baseat = "좌석 없음";}
 				
-		        int ecoseatColumn = 6;
-		        int spseatColumn = 7;
+			    int ecoseatColumn = 6;
+			    int spseatColumn = 7;
 
-		        // 링크 렌더러 설정
-		        table.getColumnModel().getColumn(ecoseatColumn).setCellRenderer(new LinkRenderer());
-		        table.getColumnModel().getColumn(spseatColumn).setCellRenderer(new LinkRenderer());
+			    // 링크 렌더러 설정
+			    table.getColumnModel().getColumn(ecoseatColumn).setCellRenderer(new LinkRenderer());
+			    table.getColumnModel().getColumn(spseatColumn).setCellRenderer(new LinkRenderer());
 
-		        // 링크 편집기 설정 (링크 클릭 시 새 창 열기)
-		        table.getColumnModel().getColumn(ecoseatColumn).setCellEditor(new LinkEditor(new JCheckBox()));
-		        table.getColumnModel().getColumn(spseatColumn).setCellEditor(new LinkEditor(new JCheckBox()));
+			    // 링크 편집기 설정 (링크 클릭 시 새 창 열기)
+			    table.getColumnModel().getColumn(ecoseatColumn).setCellEditor(new LinkEditor(new JCheckBox()));
+			    table.getColumnModel().getColumn(spseatColumn).setCellEditor(new LinkEditor(new JCheckBox()));
 
+			    
+			    String d = dto.getStartDay();
+			    d = d.replace("/0/", "/1/");
+			    d = d.replace("/00", "/01"); 
+			    d += " 00:00";
+			    
+			    System.out.println("전달받은 시간 :::::: "+d);
+			    
+			    SimpleDateFormat sf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+
+			    Object[] data = null;
+			    try {
+			        // 문자열을 Date 객체로 파싱
+			        Date inputDate = sf.parse(d);
+
+			        // Date 객체를 원하는 형식으로 출력
+			        String formattedDate = sf.format(inputDate);
+			        
+			        System.out.println(formattedDate);  // 출력: 2024/01/01 00:00
+			        
+			    	if(startday.after(inputDate)) {
+
+			    		data = new Object[]
+			    			{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, baseat, standseat, hours+"시"+minutes+"분",money};
+			    		
+			    	}	
+			    
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			    }
 				
-				Object[] data = 
-					{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, babyseat, standseat, hours+"시"+minutes+"분",money};
-				
-
-				System.out.println("시간형식확인s"+startdaytime);
-				System.out.println("시간형식확인a"+arrivedayttime);
-				
-				model.addRow(data);
+				if(data!=null) {
+					model.addRow(data);
+				}
 				
 				table.setDefaultEditor(Object.class, null);
 				
@@ -330,64 +360,60 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 				});
 
 			}
-
-	if(dto.getRoute().equals("왕복")) {
-		
-			while(rs2.next()) {//왕복인 경우 > 도착역과 출발역을 반대로 함.
-				
-				System.out.println("왕복일 경우 rs2.next() 진입");
-				
-				String train_num = rs2.getString("train_num");
-				dto.settrainNum(train_num);
-				
-				String strstation = rs2.getString("str_station");
-				String arrstation = rs2.getString("arr_station");
-				String schedule_num = rs2.getString("schedule_num");
-				Timestamp startday = rs2.getTimestamp("start_day");
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String startdaytime = sdf.format(startday);
-				Timestamp arriveday = rs2.getTimestamp("arrive_day");
-				String arrivedayttime = sdf.format(arriveday);
-				int economyseat = rs2.getInt("economy_seat");
-				int babyseat = rs2.getInt("baby_seat");
-				String standseat = rs2.getString("stand_seat");
-				int money = rs2.getInt("money");
-				
-				String ecoseat="",baseat="";
-				if(economyseat>0)ecoseat="일반실";
-				if(babyseat>0)baseat="유아실";
-				
-				Duration duration = Duration.between(startday.toInstant(), arriveday.toInstant());
-				long hours = duration.toHours(); 
-				long minutes = duration.minus(hours, ChronoUnit.HOURS).toMinutes();
-				
-				
-				
-				Object[] data = 
-					{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, baseat, standseat, hours+"시"+minutes+"분",money};
-				
-				model.addRow(data);
-				table.setDefaultEditor(Object.class, null);
-				
+					if(dto.getRoute().equals("왕복")) {
+						
+						while(rs2.next()) {//왕복인 경우 > 도착역과 출발역을 반대로 함.
+							
+							System.out.println("왕복일 경우 rs2.next() 진입");
+							
+							String train_num = rs2.getString("train_num");
+							dto.settrainNum(train_num);
+							
+							String strstation = rs2.getString("str_station");
+							String arrstation = rs2.getString("arr_station");
+							String schedule_num = rs2.getString("schedule_num");
+							Timestamp startday = rs2.getTimestamp("start_day");
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							String startdaytime = sdf.format(startday);
+							Timestamp arriveday = rs2.getTimestamp("arrive_day");
+							String arrivedayttime = sdf.format(arriveday);
+							int economyseat = rs2.getInt("economy_seat");
+							int babyseat = rs2.getInt("baby_seat");
+							String standseat = rs2.getString("stand_seat");
+							int money = rs2.getInt("money");
+							
+							String ecoseat="", baseat = "";
+							if(economyseat>0) {ecoseat="선택";} else {ecoseat = "좌석 없음";}
+							if(babyseat>0) {baseat=String.valueOf(babyseat);}else {baseat = "좌석 없음";}
+							
+							Duration duration = Duration.between(startday.toInstant(), arriveday.toInstant());
+							long hours = duration.toHours(); 
+							long minutes = duration.minus(hours, ChronoUnit.HOURS).toMinutes();
+							
+							Object[] data = 
+								{dto.getRoute() ,train_num, schedule_num, startdaytime.substring(0, 16), strstation, arrstation, ecoseat, baseat, standseat, hours+"시"+minutes+"분",money};
+							
+							model.addRow(data);
+							table.setDefaultEditor(Object.class, null);
+							}
+						}
+						
+					} catch (SQLException e) {
+						System.err.println("select() 오류 발생함");
+						System.err.println(e.getMessage());
+						e.printStackTrace();
+					}finally {
+						try {
+							if(con!=null)con.close();	
+							if(rs!=null)rs.close(); 
+							if(pstmt!=null)pstmt.close();
+							if(rs2!=null)rs2.close();
+							if(pstmt2!=null)pstmt2.close(); 
+						} catch (SQLException e) {
+							System.out.println(e.getMessage());
+						}
+					}
 				}
-			}
-			
-		} catch (SQLException e) {
-			System.err.println("select() 오류 발생함");
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}finally {
-			try {
-				if(con!=null)con.close();	
-				if(rs!=null)rs.close(); 
-				if(pstmt!=null)pstmt.close();
-				if(rs2!=null)rs2.close();
-				if(pstmt2!=null)pstmt2.close(); 
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	
     public static class LinkRenderer implements TableCellRenderer {
         private JLabel label;
@@ -395,7 +421,6 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
         public LinkRenderer() {
             label = new JLabel();
             label.setForeground(Color.BLUE);  // 링크 색상 (파란색)
-//            label.setText("<html><u>예약</u></html>");  // 링크처럼 보이게 하려면 HTML을 사용
             label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));  // 마우스 커서를 손 모양으로 변경
         }
 
@@ -424,9 +449,7 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
 		 */
 		private static final long serialVersionUID = 1L;
 
-
 		Dto dto;
-    	
     	
     	private String trainNum;
         protected JLabel label;
@@ -436,7 +459,6 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
         private int col;
         private boolean isClicked = false;
         
-
         public LinkEditor(JCheckBox checkBox) {
             super(checkBox);
             
@@ -461,15 +483,11 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
             trainNum = (String) table.getValueAt(row, 1);// 기차 번호를 가져오기 위해 column 값을 1으로 지정
             scheduleNum = (String) table.getValueAt(row, 2);
             startDatTime = (String)table.getValueAt(row, 3);
-            //label.setText("<html><u>예약</u></html>");
             
             col = column;
-            System.out.println("선택한 column 인덱스 : " + col);
             
             //클릭했을 때 콘솔에 기차번호랑 특별실, 일반실 콘솔에 출력
             System.err.println("클릭한 기차번호 : "+trainNum + ", scheduleNum : " + scheduleNum );
-            
-//            new SeatSelect(dto);
             
             return label;
         }
@@ -491,7 +509,6 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
         		new SeatSelect(dto);
         		
         	}else if(col==7) {
-        		System.out.println("유아실클릭");
         		String input = JOptionPane.showInputDialog("구매할 좌석 수량을 입력하세요");
         		//업데이트
         		if (input != null && !input.trim().isEmpty()) {
@@ -512,31 +529,21 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
                     dto.setStartDay(startDatTime);
                     dto.setId(id);
                     
-                    
-                    
         			String sql = "update schedule set baby_seat = baby_seat - ? where schedule_id = ?";
         			try {
         				
-        	    		
         	    		PreparedStatement pstmt = con.prepareStatement(sql);
         				pstmt.setString(1, input);
         				pstmt.setString(2, scheduleNum);
-        				
-        				System.out.println(dto.getId());
         				
         				
         				int res = pstmt.executeUpdate();
         				
         				if(res>0) {
-        					System.out.println("구매에 성공하였습니다");
         				}else {
-        					System.out.println("구매에 실패하였습니다.");
         				}
         				
         				con.setAutoCommit(false);
-        				System.out.println("어디까지 오니3");
-        				
-        				System.out.println();
         				
         				sql = "insert into reservation (reser_num, id, train_num, seat_type, reserve_time, seat_count, reserved_time)"
         						+ "values (reservation_seq.nextval, ?, ?, '유아석', ?, ?, sysdate)";
@@ -548,29 +555,24 @@ JPanel selectedPanel = new JPanel(new BorderLayout());
         				pstmt.setString(3, startDatTime);
         				pstmt.setString(4, input);
         				
-        				
-        				System.out.println("어디까지 오니4");
-        				System.out.println("reservation_seq.nextval");
-        				System.out.println(dto.getId());
-        				System.out.println(trainNum);
-        				System.out.println(dto.getName());
-        				System.out.println(startDatTime);
-        				System.out.println(input);
-        				
-        				
         				res = pstmt.executeUpdate();
-        				System.out.println("어디까지 오니5");
+        				
+        				con.commit();
+        				con.setAutoCommit(true);
+        				
         				
         				if(res>0) {
         					JOptionPane.showMessageDialog(null, "구매에 성공하였습니다");
         				}else {
         					JOptionPane.showMessageDialog(null, "구매에 실패하였습니다.");
         				}
+
+        				new OrderPage(dto).setVisible(true);
+        				
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
 					}
         					
-        			
         		} else {
         		    // 입력값이 없거나 취소된 경우 처리
         		    System.out.println("입력값이 없거나 취소되었습니다.");

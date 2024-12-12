@@ -5,7 +5,6 @@ import java.sql.*;
 import javax.swing.*;
 
 public class FindId extends JFrame {
-
     /**
 	 * 
 	 */
@@ -24,12 +23,14 @@ public class FindId extends JFrame {
         // 기본적인 레이아웃 설정
         setTitle("아이디 찾기");
         getContentPane().setLayout(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // 창을 닫을 때 dispose()
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 340, 250);
         setResizable(false);
         
         // 이름 입력란
         Name_JL = new JLabel("이름");
+        Name_JL.setFont(new Font("굴림", Font.BOLD, 12));
+        Name_JL.setForeground(new Color(0, 0, 0));
         Name_JL.setBounds(65, 40, 50, 20);
         getContentPane().add(Name_JL);
 
@@ -39,6 +40,8 @@ public class FindId extends JFrame {
 
         // 전화번호 입력란
         Phone_JL = new JLabel("전화번호");
+        Phone_JL.setFont(new Font("굴림", Font.BOLD, 12));
+        Phone_JL.setForeground(new Color(0, 0, 0));
         Phone_JL.setBounds(65, 80, 50, 20);
         getContentPane().add(Phone_JL);
 
@@ -48,6 +51,7 @@ public class FindId extends JFrame {
 
         // 아이디 찾기 버튼
         FindId_BT = new JButton("아이디 찾기");
+        FindId_BT.setFont(new Font("굴림", Font.BOLD, 12));
         FindId_BT.setBounds(101, 149, 120, 30);
         getContentPane().add(FindId_BT);
         FindId_BT.setForeground(Color.BLACK);
@@ -58,10 +62,8 @@ public class FindId extends JFrame {
         Caution_JL.setBounds(95, 110, 150, 15);
         getContentPane().add(Caution_JL);
         
-        // 버튼 클릭 이벤트 (아이디 찾기 로직)
+        // 아이디 찾기 버튼 클릭 시
         FindId_BT.addActionListener(e -> {
-            // 실제로 아이디 찾기 로직을 추가해야 합니다.
-            // 예시로 메시지를 표시하는 코드
             String name = Name_TF.getText();
             String phone = Phone_TF.getText();
 
@@ -76,7 +78,6 @@ public class FindId extends JFrame {
         setVisible(true);  // 화면을 표시
     }
 
-    // 데이터베이스 연결
     void connect() {
         String driver = "oracle.jdbc.driver.OracleDriver";
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -142,5 +143,3 @@ public class FindId extends JFrame {
         new FindId();
     }
 }
-
-// 확인 누르면 login 클래스 실행 되게++

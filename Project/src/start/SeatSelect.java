@@ -12,16 +12,16 @@ public class SeatSelect extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	
-	Connection con = null;                  // DB와 연결하는 객체
-	PreparedStatement pstmt = null;         // SQL문을 DB에 전송하는 객체
-	ResultSet rs = null;                    // SQL문 실행 결과를 가지고 있는 객체
-	String sql = null;                      // SQL문을 저장하는 문자열 변수.
+	Connection con = null;
+	PreparedStatement pstmt = null;
+	ResultSet rs = null;
+	String sql = null;
 	
 	DefaultTableModel model2;
 	JTable table2;
-	JComboBox<String> jComboBox;
+	JComboBox<String> SeatChose_CB;
 	JTextField buyCount;
-	static Dto dto;//////////////////////
+	Dto dto;
 
 	/**
 	 * Launch the application.
@@ -30,8 +30,6 @@ public class SeatSelect extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SeatSelect frame = new SeatSelect(dto);
-					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -43,24 +41,35 @@ public class SeatSelect extends JFrame {
 	 * Create the frame.
 	 */
 	public SeatSelect(Dto dto) {
+		setTitle("좌석 선택");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 932, 587);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(243, 249, 198));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		
 
-		JLabel selectTitle = new JLabel(dto.gettrainNum()+"기차의 "+dto.getSchedule_num()+"번 조회 화면");
-		// String[] header = {"기차 번호", "1인실", "내측 좌석", "외측 좌석"};
+		JLabel Title_LB = new JLabel(dto.gettrainNum()+"기차 조회 화면");
+		Title_LB.setFont(new Font("굴림", Font.BOLD, 13));
 		String[] header = {"좌석 유형", "남은 좌석 수"};
 		
-		JPanel selectedPanel = new JPanel();//layout 삭제함
+		JPanel selectedPanel = new JPanel();
+		selectedPanel.setBackground(new Color(243, 249, 198));
+		selectedPanel.setBounds(0, 35, 691, 413);
 		JPanel container1 = new JPanel();
-		JPanel container2 = new JPanel(new BorderLayout());
+		container1.setBackground(new Color(243, 249, 198));
+		container1.setBounds(158, 453, 403, 33);
+		JPanel container2 = new JPanel();
+		container2.setBackground(new Color(243, 249, 198));
+		container2.setBounds(114, 10, 703, 496);
 		JPanel container3 = new JPanel();
+		container3.setBackground(new Color(243, 249, 198));
+		container3.setBounds(194, 10, 283, 25);
 		
 		model2 = new DefaultTableModel(header, 0);
+		selectedPanel.setLayout(null);
 		
 		table2 = new JTable(model2);
 
@@ -68,37 +77,43 @@ public class SeatSelect extends JFrame {
 				table2, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		jsp.setBounds(24, 0, 667, 398);
 		
-		selectedPanel.add(jsp, BorderLayout.CENTER);
-		container3.add(selectTitle);
+		selectedPanel.add(jsp);
+		container3.add(Title_LB);
 		
 
-		JButton buyButton = new JButton("예약하기");
+		JButton Buy_BT = new JButton("예약하기");
+		Buy_BT.setFont(new Font("굴림", Font.BOLD, 12));
+		Buy_BT.setBackground(new Color(255, 255, 255));
 		JLabel buyLable = new JLabel("좌석 수 입력 : ");
+		buyLable.setFont(new Font("굴림", Font.BOLD, 12));
 		buyCount = new JTextField(10);
 		String[] type = {"1인석", "내측좌석", "외측좌석"};
-		jComboBox = new JComboBox<>(type);
+		contentPane.setLayout(null);
+		SeatChose_CB = new JComboBox<>(type);
+		SeatChose_CB.setFont(new Font("굴림", Font.BOLD, 12));
+		SeatChose_CB.setBackground(new Color(255, 255, 255));
 
-		container1.add(jComboBox);
+		container1.add(SeatChose_CB);
 		container1.add(buyLable);
 		container1.add(buyCount);
-		container1.add(buyButton);
+		container1.add(Buy_BT);
+		container2.setLayout(null);
 
-		container2.add(container3,BorderLayout.NORTH);
-		container2.add(selectedPanel, BorderLayout.CENTER);
-		container2.add(container1, BorderLayout.SOUTH);
+		container2.add(container3);
+		container2.add(selectedPanel);
+		container2.add(container1);
 
-		add(container2);
+		getContentPane().add(container2);
 
 
-		buyButton.addActionListener(new ActionListener() {
+		Buy_BT.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int yes_no = JOptionPane.showConfirmDialog(null, "예약하시겠습니까", "확인", JOptionPane.YES_NO_OPTION);
-				if(yes_no==1){//아니오 클릭
-					System.out.println("아니오 들어옴");
-				}else if(yes_no==0){//네 클릭
-					System.out.println("네 들어옴");
+				int yes_no = JOptionPane.showConfirmDialog(null, "예약하시겠습니까?", "확인", JOptionPane.YES_NO_OPTION);
+				if(yes_no==1){	// 아니오
+				}else if(yes_no==0){	// 네
 					seatDeduct(dto);
 				}
 			}
@@ -133,12 +148,7 @@ public class SeatSelect extends JFrame {
 
 	
 	void select(Dto dto) {
-		
-		System.out.println("seat select문 들어옴");
-		System.out.println(dto.getSchedule_num());
-		System.out.println(dto.gettrainNum());
-		System.out.println("------------------");
-		
+
 		sql = "select * from seatinfo where train_num = ? and schedule_num = ?";
 		
 		try {
@@ -146,14 +156,9 @@ public class SeatSelect extends JFrame {
 			pstmt.setString(1, dto.gettrainNum());
 			pstmt.setString(2, dto.getSchedule_num());
 			
-			System.out.println(sql);
-			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				System.out.println(rs.getString("train_num"));
-				System.out.println(rs.getString("inside_seat_count"));
-				System.out.println(rs.getString("outside_seat_count"));
 				
 				String train_num = rs.getString("train_num");
 				String one_seat_count = rs.getString("one_seat_count");
@@ -174,18 +179,15 @@ public class SeatSelect extends JFrame {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("seat select() 에러 발생");
-			System.out.println(e.getMessage());
 		}
 	}
 
 	void seatDeduct(Dto dto){
-		System.out.println("seatDeduct 진입");
 
-		if(jComboBox.getSelectedItem().equals("1인석")){
-			System.out.println("1인석 구매");
+		if(SeatChose_CB.getSelectedItem().equals("1인석")){
 			connect();
-			sql = "update seatinfo set one_seat_count = one_seat_count-? where train_num = ? and schedule_num = ?";
+			sql = "update seatinfo set one_seat_count = one_seat_count-? "
+					+ "where train_num = ? and schedule_num = ?";
 			try {
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, Integer.parseInt(buyCount.getText()));
@@ -196,20 +198,17 @@ public class SeatSelect extends JFrame {
 				
 				con.setAutoCommit(false);
 				if(res>0){
-					System.out.println("1인석 업데이트 실패");
 				}else {
 					JOptionPane.showMessageDialog(null, "구매에 실패하였습니다. 다시 시도해주세요.");
 				}
 			} catch (Exception e) {
-				System.out.println("one_seat update 에서 실패");
-				System.out.println(e.getMessage());
+
 			}finally {
 				
 			}
 			
 
-		}else if(jComboBox.getSelectedItem().equals("내측좌석")){
-			System.out.println("내측좌석 구매");
+		}else if(SeatChose_CB.getSelectedItem().equals("내측좌석")){
 			sql = "update seatinfo set inside_seat_count = inside_seat_count - ? where train_num = ? and schedule_num = ?";
 			try {
 				pstmt = con.prepareStatement(sql);
@@ -221,19 +220,16 @@ public class SeatSelect extends JFrame {
 				
 				con.setAutoCommit(false);
 				if(res>0){
-					System.out.println("내측좌석 업데이트 실패");
 				}else {
 					JOptionPane.showMessageDialog(null, "구매에 실패하였습니다. 다시 시도해주세요.");
 				}
 			} catch (Exception e) {
-				System.out.println("inside_seat update 에서 실패");
-				System.out.println(e.getMessage());
 			}finally {
 		
 			}
-		}else if(jComboBox.getSelectedItem().equals("외측좌석")){
-			System.out.println("외측좌석 구매");
-			sql = "update seatinfo set outside_seat_count = outside_seat_count - ? where train_num = ? and schedule_num = ?";
+		}else if(SeatChose_CB.getSelectedItem().equals("외측좌석")){
+			sql = "update seatinfo set outside_seat_count = outside_seat_count - ? "
+					+ "where train_num = ? and schedule_num = ?";
 			try {
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, Integer.parseInt(buyCount.getText()));
@@ -244,57 +240,45 @@ public class SeatSelect extends JFrame {
 				
 				con.setAutoCommit(false);
 				if(res>0){
-					System.out.println("외측좌석 업데이트 실패");
 				}else {
 					JOptionPane.showMessageDialog(null, "구매에 실패하였습니다. 다시 시도해주세요.");
 				}
 			} catch (Exception e) {
-				System.out.println("inside_seat update 에서 실패");
-				System.out.println(e.getMessage());
 			}finally {
-
 			}
 		}
 
 		sql = "insert into reservation values(reservation_seq.nextval, ?, ?, ?, to_timestamp(?,'YYYY-MM-DD HH24:MI'), ?, sysdate)";
-		/* 순서 : 시퀀스, 아이디, 기차번호, 좌석종류, 예약자이름, 예약시간, 좌석수, 예약한 시간(sysdate) */
+
 		try {
-			System.out.println("-------좌석테이블에 넣어질 정보들------------");
-			System.out.println(dto.getId());
-			System.out.println(dto.gettrainNum());
-			System.out.println((String)jComboBox.getSelectedItem());
-//			System.out.println(dto.getName());
-			System.out.println(dto.getStartDay());
-			System.out.println(buyCount.getText());
-			System.out.println("==========================================");
+//			System.out.println("-------좌석테이블에 넣어질 정보들------------");
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, dto.getId());
 			pstmt.setString(2, dto.gettrainNum());
-			pstmt.setString(3, (String)jComboBox.getSelectedItem());
-//			pstmt.setString(4, dto.getName());
+			pstmt.setString(3, (String)SeatChose_CB.getSelectedItem());
 			pstmt.setString(4, dto.getStartDay());
 			pstmt.setInt(5, Integer.parseInt(buyCount.getText()));
 
 			int res = pstmt.executeUpdate();
 			
 			//모든 정보가 들어가면 commit 되게.
+			con.commit();
 			con.setAutoCommit(true);
 			
 			if(res>0){
 				JOptionPane.showMessageDialog(null, "구매하셨습니다.");
+				this.dispose();
+				new OrderPage(dto).setVisible(true);
 			}else {
 				JOptionPane.showMessageDialog(null, "구매에 실패하였습니다. 다시 시도해주세요.");
 			}
 		} catch (Exception e) {
-			System.out.println("reservation update 에서 실패");
 			System.out.println(e.getMessage());
 		}finally {
 			try {
 				con.close();
 				pstmt.close();
 			} catch (SQLException e) {
-				System.out.println("reservation finally 실패");
-				System.out.println(e.getMessage());
 			}
 		}
 

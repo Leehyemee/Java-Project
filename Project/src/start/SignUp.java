@@ -16,15 +16,8 @@ public class SignUp extends JFrame {
     
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JTextField Id_TF;
-    private JPasswordField Pwd_TF;
-    private JPasswordField PwdCheck_TF;
-    private JTextField Email_TF;
-    private JTextField Name_TF;
-    private JTextField Address_TF;
-    private JTextField Address_TF2;
-    private JTextField Phone_TF, Phone_TF2;  // phoneField_2를 인스턴스 변수로 변경
-    private JTextField BirthField;
+    private JPasswordField Pwd_TF, PwdCheck_TF;
+    private JTextField Id_TF, Email_TF, Name_TF, Address_TF, Address_TF2, Phone_TF, Phone_TF2, BirthField;
     private JComboBox<String> Email_CB, Phone_CB;
     private boolean isIdChecked = false;  // 아이디 중복확인 여부를 저장하는 변수
     
@@ -47,8 +40,6 @@ public class SignUp extends JFrame {
         } 
     }
 
-    
-    
     // 회원가입 정보 insert
     void insert() {
         try {
@@ -345,23 +336,23 @@ public class SignUp extends JFrame {
 		lblNewLabel_6_2_2.setBounds(333, 567, 16, 17);
 		contentPane.add(lblNewLabel_6_2_2);
 		
-		JLabel lblNewLabel = new JLabel("※ 숫자, 영어 포함 6자리 이상");
-		lblNewLabel.setForeground(new Color(255, 128, 128));
-		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 11));
-		lblNewLabel.setBounds(205, 236, 150, 15);
-		contentPane.add(lblNewLabel);
+		JLabel Caution_LB = new JLabel("※ 숫자, 영어 포함 6자리 이상");
+		Caution_LB.setForeground(new Color(255, 128, 128));
+		Caution_LB.setFont(new Font("굴림", Font.PLAIN, 11));
+		Caution_LB.setBounds(205, 236, 150, 15);
+		contentPane.add(Caution_LB);
 		
-		JLabel lblNewLabel_1 = new JLabel("※ 숫자, 영어 포함 8자리 이상");
-		lblNewLabel_1.setForeground(new Color(255, 128, 128));
-		lblNewLabel_1.setFont(new Font("굴림", Font.PLAIN, 11));
-		lblNewLabel_1.setBounds(205, 281, 150, 15);
-		contentPane.add(lblNewLabel_1);
+		JLabel Caution_LB2 = new JLabel("※ 숫자, 영어, 특수문자 포함 8자리 이상");
+		Caution_LB2.setForeground(new Color(255, 128, 128));
+		Caution_LB2.setFont(new Font("굴림", Font.PLAIN, 11));
+		Caution_LB2.setBounds(205, 281, 219, 15);
+		contentPane.add(Caution_LB2);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("※ 숫자, 영어 포함 8자리 이상");
-		lblNewLabel_1_1.setForeground(new Color(255, 128, 128));
-		lblNewLabel_1_1.setFont(new Font("굴림", Font.PLAIN, 11));
-		lblNewLabel_1_1.setBounds(205, 323, 150, 15);
-		contentPane.add(lblNewLabel_1_1);
+		JLabel Caution_LB_3 = new JLabel("※ 숫자, 영어, 특수문자 포함 8자리 이상");
+		Caution_LB_3.setForeground(new Color(255, 128, 128));
+		Caution_LB_3.setFont(new Font("굴림", Font.PLAIN, 11));
+		Caution_LB_3.setBounds(205, 323, 207, 15);
+		contentPane.add(Caution_LB_3);
 		
 		setVisible(true); // 화면에 보이도록 설정
 		
@@ -420,7 +411,6 @@ public class SignUp extends JFrame {
                     return; // 전화번호가 올바르지 않으면 진행하지 않음
                 }
                 
-
                 // 모든 필드가 유효한 경우 DB에 저장
                 connect();
                 insert();
@@ -437,9 +427,7 @@ public class SignUp extends JFrame {
                 Phone_CB.setSelectedItem("선택");
                 Phone_TF.setText("");
                 Phone_TF2.setText("");
-                Email_CB.setSelectedItem("이메일 선택");	
-            	
-                
+                Email_CB.setSelectedItem("이메일 선택");
             }
         });  
     }
@@ -482,7 +470,6 @@ public class SignUp extends JFrame {
         return true;
     }
     
-    
     public static void main(String[] args) { 
     	EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -496,10 +483,3 @@ public class SignUp extends JFrame {
         });
     } 
 }
-
-// 필수 입력사항 ++
-// 주소검색 ++
-// email 텍스트 필드 초기화++
-// 010 콤보박스 초기화++
-// 아이디 중복확인 안하면 회원가입 불가하게++
-// 전화번호 형식 설정 ++

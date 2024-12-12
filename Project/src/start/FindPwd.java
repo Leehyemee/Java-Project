@@ -24,12 +24,12 @@ public class FindPwd extends JFrame {
         // 기본적인 레이아웃 설정
         setTitle("비밀번호 찾기");
         getContentPane().setLayout(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // 창을 닫을 때 dispose()
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 340, 250);
         setResizable(false);
         
-        // 아이디 입력란
         Id_JL = new JLabel("아이디");
+        Id_JL.setFont(new Font("굴림", Font.BOLD, 12));
         Id_JL.setBounds(66, 40, 50, 20);
         getContentPane().add(Id_JL);
 
@@ -37,8 +37,8 @@ public class FindPwd extends JFrame {
         Id_TF.setBounds(126, 40, 120, 20);
         getContentPane().add(Id_TF);
 
-        // 전화번호 입력란
         Phone_JL = new JLabel("전화번호");
+        Phone_JL.setFont(new Font("굴림", Font.BOLD, 12));
         Phone_JL.setBounds(66, 80, 70, 20);
         getContentPane().add(Phone_JL);
 
@@ -46,21 +46,20 @@ public class FindPwd extends JFrame {
         Phone_TF.setBounds(126, 80, 120, 20);
         getContentPane().add(Phone_TF);
 
-        // 비밀번호 찾기 버튼
         FindPwd_BT = new JButton("비밀번호 찾기");
+        FindPwd_BT.setFont(new Font("굴림", Font.BOLD, 12));
         FindPwd_BT.setBackground(new Color(255, 255, 255));
         FindPwd_BT.setBounds(100, 151, 120, 30);
         getContentPane().add(FindPwd_BT);
         
         Caution_JL = new JLabel("※ 전화번호는 \"-\" 까지 입력");
+        Caution_JL.setFont(new Font("굴림", Font.PLAIN, 12));
         Caution_JL.setForeground(new Color(255, 128, 128));
         Caution_JL.setBounds(90, 110, 156, 15);
         getContentPane().add(Caution_JL);
 
-        // 버튼 클릭 이벤트 (비밀번호 찾기 로직)
+        // 비밀번호 버튼 클릭 시
         FindPwd_BT.addActionListener(e -> {
-            // 실제로 비밀번호 찾기 로직을 추가해야 합니다.
-            // 예시로 메시지를 표시하는 코드
             String id = Id_TF.getText();
             String phone = Phone_TF.getText();
 

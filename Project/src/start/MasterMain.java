@@ -5,14 +5,12 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-
 public class MasterMain extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private ImageIcon backgroundImage;
-	
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -25,7 +23,6 @@ public class MasterMain extends JFrame {
 			}
 		});
 	}
-
 
 	public MasterMain() {
 		setTitle("관리자 메인화면");
@@ -63,73 +60,75 @@ public class MasterMain extends JFrame {
 		panel.setLayout(null);
 		
 		JButton Member_BT = new JButton("회원관리");
-		Member_BT.setFont(new Font("새굴림", Font.PLAIN, 12));
+		Member_BT.setForeground(new Color(0, 0, 0));
+		Member_BT.setFont(new Font("새굴림", Font.BOLD, 12));
 		Member_BT.setBackground(new Color(255, 255, 255));
 		Member_BT.setBounds(271, 10, 97, 35);
 		panel.add(Member_BT);
 		
 		JButton Train_BT = new JButton("기차관리");
-		Train_BT.setFont(new Font("새굴림", Font.PLAIN, 12));
+		Train_BT.setForeground(new Color(0, 0, 0));
+		Train_BT.setFont(new Font("새굴림", Font.BOLD, 12));
 		Train_BT.setBackground(new Color(255, 255, 255));
 		Train_BT.setBounds(458, 10, 97, 35);
 		panel.add(Train_BT);
 		
 		JButton Logout_BT = new JButton("로그아웃");
-		Logout_BT.setFont(new Font("새굴림", Font.PLAIN, 12));
+		Logout_BT.setForeground(new Color(0, 0, 0));
+		Logout_BT.setFont(new Font("새굴림", Font.BOLD, 12));
 		Logout_BT.setBackground(new Color(255, 255, 255));
 		Logout_BT.setBounds(639, 10, 97, 35);
 		panel.add(Logout_BT);
 		
-		// 회원관리 버튼 클릭 시 MemMenagement 클래스 실행
+		// 회원관리 버튼 클릭 시
         Member_BT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // MemMenagement 클래스 실행
                 MemMenagement memMenagementFrame = new MemMenagement();
-                memMenagementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // MemMenagement 창만 닫히도록 설정
+                // MemMenagement 창만 닫히도록 설정
+                memMenagementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
                 memMenagementFrame.setVisible(true); // 새 창을 보이도록 설정
                 dispose();
             }
         });
         
-        
-        // 기차관리 버튼 클릭 시 TrainManagement 클래스 실행
+        // 기차관리 버튼 클릭 시
         Train_BT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TrainManagement 클래스 실행
                 TrainManagement trainManagementFrame = new TrainManagement();
-                trainManagementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // TrainManagement 창만 닫히도록 설정
+                // TrainManagement 창만 닫히도록 설정
+                trainManagementFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
                 trainManagementFrame.setVisible(true); // 새 창을 보이도록 설정
                 dispose();
             }
         });
 
-        
-        // 로그아웃 버튼 클릭 시 종료 확인 메시지
+        // 로그아웃 버튼 클릭 시
         Logout_BT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // "종료하시겠습니까?" 메시지 표시
                 int result = JOptionPane.showConfirmDialog(
-                        MasterMain.this,    // 부모 창
-                        "종료하시겠습니까?", // 메시지
-                        "로그아웃",         // 제목
-                        JOptionPane.YES_NO_OPTION, // Y/N 옵션
-                        JOptionPane.QUESTION_MESSAGE // 질문 아이콘
+                        MasterMain.this,
+                        "종료하시겠습니까?",
+                        "로그아웃",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
                 );
 
              // "Yes"를 누르면 로그인 화면 실행
                 if (result == JOptionPane.YES_OPTION) {
                     // Login 클래스 실행
-                    Login loginFrame = new Login();  // Login 클래스를 인스턴스화
-                    loginFrame.setVisible(true);      // 로그인 창을 보이도록 설정
+                    Login loginFrame = new Login();
+                    loginFrame.setVisible(true);
 
-                    // 현재 창을 닫기
+                    // 현재 창 닫기
                     dispose();  // MasterMain 창을 닫음
                 }                // "No"를 누르면 아무 동작도 하지 않음
                 else if (result == JOptionPane.NO_OPTION) {
-                    // 아무 동작도 하지 않음 (창을 유지)
+                    // 창 유지
                 }
             }
         });

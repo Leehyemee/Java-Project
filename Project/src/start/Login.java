@@ -20,6 +20,7 @@ public class Login extends JFrame {
      PreparedStatement pstmt = null;
      ResultSet rs = null;
      String sql = null;
+     Dto dto;
 
     public Login() {
         in();
@@ -115,9 +116,9 @@ public class Login extends JFrame {
             // DB에서 아이디와 비밀번호가 일치하는지 확인
             if (isValidLogin(Id, password)) {
                 JOptionPane.showMessageDialog(this, "로그인 성공");
-                Dto dto = new Dto();
-                dto.setId(Id);  // 아이디 설정
-                new MemMain(dto).setVisible(true);  // MemMain 화면 띄우기
+                UserDto userdto = new UserDto();
+                userdto.setId(Id);  // 아이디 설정
+                new MemMain(userdto).setVisible(true);  // MemMain 화면 띄우기
                 this.dispose();  // 현재 로그인 창 닫기
                 
             } else {

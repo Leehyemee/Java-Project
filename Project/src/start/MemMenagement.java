@@ -21,8 +21,8 @@ public class MemMenagement extends JFrame {
 	
     DefaultTableModel model;
     JTable table;
-    JComboBox<String> Choice_CB; // 검색 조건 ComboBox
-    JTextField Search_TF; // 검색 텍스트 필드
+    JComboBox<String> Choice_CB;
+    JTextField Search_TF;
     private JPanel contentPane;
     private ImageIcon backgroundImage;
 
@@ -52,43 +52,50 @@ public class MemMenagement extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JButton movement_BT = new JButton("메인으로..");
-        movement_BT.setBackground(new Color(255, 255, 255));
-        movement_BT.setBounds(965, 470, 89, 25);
-        contentPane.add(movement_BT);
+        JButton Movement_BT = new JButton("메인으로..");
+        Movement_BT.setBackground(new Color(255, 255, 255));
+        Movement_BT.setBounds(965, 470, 89, 25);
+        contentPane.add(Movement_BT);
 
         // 테이블 생성 및 설정
-        String[] header = {"아이디", "비밀번호", "생년월일", "이름", "주소", "핸드폰", "E-MAIL", "가입일자", "회원번호"};
+        String[] header = 
+        	{"아이디", "비밀번호", "생년월일", "이름", "주소", "핸드폰", "E-MAIL", "가입일자", "회원번호"};
         model = new DefaultTableModel(header, 0);
         table = new JTable(model);
-        JScrollPane jsp = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane jsp = new JScrollPane
+        		(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+        				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jsp.setBounds(30, 94, 1024, 366);  // 테이블 위치 및 크기 설정
         contentPane.add(jsp);
 
         // 검색 관련 ComboBox와 JTextField 설정
         Choice_CB = new JComboBox<String>();
         Choice_CB.setBackground(new Color(255, 255, 255));
-        Choice_CB.setModel(new DefaultComboBoxModel<String>(new String[] {"선택", "전체", "ID", "PASSWORD", "BIRTHDATE", "USERNAME", "ADDRESS", "PHONE", "EMAIL", "CREATED_AT", "MEMBER_ID"}));
-        Choice_CB.setBounds(30, 470, 89, 25);  // ComboBox 위치 설정
+        Choice_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"선택", "전체", "ID", "PASSWORD", "BIRTHDATE", "USERNAME", "ADDRESS", "PHONE", 
+        				"EMAIL", "CREATED_AT", "MEMBER_ID"}));
+        Choice_CB.setBounds(30, 470, 89, 25);
         contentPane.add(Choice_CB);
 
         Search_TF = new JTextField();
         Search_TF.setForeground(new Color(0, 0, 0));
         Search_TF.setBackground(new Color(255, 255, 255));
-        Search_TF.setBounds(157, 470, 150, 25);  // 텍스트 필드 위치 설정
+        Search_TF.setBounds(157, 470, 150, 25);
         contentPane.add(Search_TF);
 
         JButton Search_BT = new JButton("검색");
         Search_BT.setBackground(new Color(255, 255, 255));
-        Search_BT.setBounds(342, 471, 97, 23);  // 검색 버튼 위치 설정
+        Search_BT.setBounds(342, 471, 97, 23);
         contentPane.add(Search_BT);
         
         JButton Delet_BT = new JButton("삭제");
         Delet_BT.setBackground(new Color(255, 255, 255));
         Delet_BT.addActionListener(new ActionListener() {
+        	
         	public void actionPerformed(ActionEvent e) {
         	}
         });
+        
         Delet_BT.setBounds(652, 471, 76, 23);
         contentPane.add(Delet_BT);
         
@@ -102,11 +109,11 @@ public class MemMenagement extends JFrame {
         Reset_BT.setBounds(456, 471, 97, 23);
         contentPane.add(Reset_BT);
         
-        JLabel lblNewLabel = new JLabel("회원관리");
-        lblNewLabel.setBackground(new Color(255, 255, 255));
-        lblNewLabel.setFont(new Font("굴림", Font.BOLD, 24));
-        lblNewLabel.setBounds(30, 33, 107, 34);
-        contentPane.add(lblNewLabel);
+        JLabel Memmenagement_LB = new JLabel("회원관리");
+        Memmenagement_LB.setBackground(new Color(255, 255, 255));
+        Memmenagement_LB.setFont(new Font("굴림", Font.BOLD, 24));
+        Memmenagement_LB.setBounds(30, 33, 107, 34);
+        contentPane.add(Memmenagement_LB);
 
         // 가운데 정렬을 위한 렌더러 설정
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -117,20 +124,19 @@ public class MemMenagement extends JFrame {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
-        
         // 검색 버튼 클릭 시 동작하는 이벤트 리스너
         Search_BT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String searchType = (String) Choice_CB.getSelectedItem(); // 선택한 검색 조건
-                String searchText = Search_TF.getText(); // 텍스트 필드에 입력한 값
+                String searchType = (String) Choice_CB.getSelectedItem();
+                String searchText = Search_TF.getText();
 
                 // 검색 조건에 따른 처리
                 if (!searchType.equals("선택") && !searchText.isEmpty()) {
                     if (searchType.equals("전체")) {
-                        searchData("전체", "");  // "전체" 선택 시 조건 없이 검색
+                        searchData("전체", "");
                     } else {
-                        searchData(searchType, searchText);  // 선택한 조건에 맞게 검색
+                        searchData(searchType, searchText);
                     }
                 } else {
                     // "전체"를 선택하거나 검색 조건이 잘못되었을 때
@@ -147,7 +153,7 @@ public class MemMenagement extends JFrame {
         Delet_BT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow(); // 선택된 행
+                int selectedRow = table.getSelectedRow();
                 if (selectedRow >= 0) {
                     String memberId = (String) model.getValueAt(selectedRow, 8); // MEMBER_ID
                     deleteData(memberId);  // 선택한 회원 ID로 삭제
@@ -164,7 +170,7 @@ public class MemMenagement extends JFrame {
                 int selectedRow = table.getSelectedRow(); // 선택된 행
                 if (selectedRow >= 0) {
                     // 선택된 행에서 MEMBER_ID를 가져오기
-                    String memberId = (String) model.getValueAt(selectedRow, 8); // MEMBER_ID
+                    String memberId = (String) model.getValueAt(selectedRow, 8);
 
                     // 수정할 항목 선택을 위한 입력 다이얼로그
                     String[] options = {"ID", "PASSWORD", "BIRTHDATE", "USERNAME", "ADDRESS", "PHONE", "EMAIL"};
@@ -175,7 +181,7 @@ public class MemMenagement extends JFrame {
                         JOptionPane.QUESTION_MESSAGE,
                         null,
                         options,
-                        options[0] // 기본값 설정
+                        options[0] // 기본값
                     );
 
                     if (selectedColumn != null) {
@@ -194,7 +200,7 @@ public class MemMenagement extends JFrame {
             }
         });
     
-     // 초기화 버튼 클릭 시 동작
+        // 초기화 버튼 클릭 시 동작
         Reset_BT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -202,15 +208,15 @@ public class MemMenagement extends JFrame {
                 Choice_CB.setSelectedIndex(0);  // "선택"으로 초기화
                 
                 // 검색 텍스트 필드 초기화
-                Search_TF.setText("");  // 텍스트 필드 비우기
+                Search_TF.setText("");
                 
                 // 테이블 초기화
-                model.setRowCount(0);  // 테이블 내용 삭제
+                model.setRowCount(0);
             }
         });
         
-     // "메인으로.." 버튼 이벤트
-        movement_BT.addActionListener(new ActionListener() {
+        // "메인으로.." 버튼 이벤트
+        Movement_BT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int result = JOptionPane.showConfirmDialog(
@@ -226,9 +232,7 @@ public class MemMenagement extends JFrame {
                     dispose(); // 현재 TrainManagement 창 종료
                 }
             }
-        });
-        
-        
+        }); 
     }	
     public Connection connect() {
         String driver = "oracle.jdbc.driver.OracleDriver";
@@ -246,19 +250,18 @@ public class MemMenagement extends JFrame {
             System.out.println("DB 연결에 실패했습니다.");
             e.printStackTrace();
         }
-        
         return null; // 연결 실패 시 null 반환
     }
-        // 검색 메서드
+    // 검색 메서드
     public void searchData(String searchType, String searchText) {
         try {
             con = connect();
             if (con != null) {
                 String query = "";
                 
-                // "전체"가 선택되면 모든 회원을 조회
+                // "전체"가 선택되면 관리자 제외 모든 회원을 조회
                 if (searchType.equals("전체")) {
-                    query = "SELECT * FROM USERS WHERE ID NOT LIKE 'admin_%'"; // 모든 회원 정보를 조회하되 관리자는 제외한 쿼리
+                    query = "SELECT * FROM USERS WHERE ID NOT LIKE 'admin_%'";
                 } else {
                     // 사용자가 선택한 검색 조건에 맞는 SQL 쿼리 작성
                     query = "SELECT * FROM USERS WHERE " + searchType + " LIKE ?";
@@ -277,15 +280,15 @@ public class MemMenagement extends JFrame {
                 // 검색된 결과 테이블에 추가
                 while (rs.next()) {
                     Object[] row = {
-                        rs.getString("ID"),          // ID 컬럼
-                        rs.getString("PASSWORD"),    // PASSWORD 컬럼
-                        rs.getString("BIRTHDATE"),   // BIRTHDATE 컬럼
-                        rs.getString("USERNAME"),    // USERNAME 컬럼
-                        rs.getString("ADDRESS"),     // ADDRESS 컬럼
-                        rs.getString("PHONE"),       // PHONE 컬럼
-                        rs.getString("EMAIL"),       // EMAIL 컬럼
-                        rs.getString("CREATED_AT"),  // CREATED_AT 컬럼
-                        rs.getString("MEMBER_ID")    // MEMBER_ID 컬럼
+                        rs.getString("ID"),
+                        rs.getString("PASSWORD"),
+                        rs.getString("BIRTHDATE"),
+                        rs.getString("USERNAME"),
+                        rs.getString("ADDRESS"),
+                        rs.getString("PHONE"), 
+                        rs.getString("EMAIL"),
+                        rs.getString("CREATED_AT"),
+                        rs.getString("MEMBER_ID")
                     };
                     model.addRow(row);
                 }
@@ -302,9 +305,7 @@ public class MemMenagement extends JFrame {
             }
         }
     }
-
-
-        // 삭제 메서드
+    // 삭제 메서드
     public void deleteData(String member_Id) {
         try {
             con = connect();
@@ -327,7 +328,6 @@ public class MemMenagement extends JFrame {
                         }
                     }
                 } else {
-                    // 삭제 실패 시 메시지 표시
                     JOptionPane.showMessageDialog(this, "삭제 실패");
                 }
             }
@@ -344,7 +344,7 @@ public class MemMenagement extends JFrame {
     }
     
     public boolean isValidPassword(String password) {
-        // 정규 표현식: 숫자와 영어 포함, 길이 8자리 이상
+        // 비밀번호: 숫자와 영어 포함, 길이 8자리 이상
         String regex = "^(?=.*[a-zA-Z])(?=.*\\d).{8,}$";
         return password.matches(regex);
     }
@@ -355,7 +355,8 @@ public class MemMenagement extends JFrame {
             if (column.equals("PASSWORD")) {
                 // 비밀번호가 형식에 맞지 않으면 계속해서 입력을 받도록 함
                 while (!isValidPassword(newValue)) {
-                    JOptionPane.showMessageDialog(this, "비밀번호는 숫자와 영문자가 포함된 8자리 이상이어야 합니다.");
+                    JOptionPane.showMessageDialog
+                    (this, "비밀번호는 숫자와 영문자가 포함된 8자리 이상이어야 합니다.");
                     newValue = JOptionPane.showInputDialog(this, "비밀번호를 다시 입력하세요");
                     
                     // 취소 버튼을 누르면 종료
@@ -437,8 +438,3 @@ public class MemMenagement extends JFrame {
         });
     }
 }
-
-// 관리자 메인화면
-// 회원관리 버튼???
-// 로그아웃 버튼 - 종료하시겠습니까? Y/N 선택 후 Y-종료, N - 화면 유지++
-// 기차관리 - 민정님

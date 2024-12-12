@@ -18,7 +18,6 @@ public class MasterLogin extends JFrame {
     String sql = null;
 	ImageIcon icon;
 	
-	// 데이터베이스 연결
     void connect() {
         String driver = "oracle.jdbc.driver.OracleDriver";
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -90,18 +89,18 @@ public class MasterLogin extends JFrame {
 		Login_BT.setFont(new Font("굴림", Font.PLAIN, 12));
 		
 	
-		MId_JL.setBackground(Color.WHITE);  // 배경색 파란색
-		MId_JL.setForeground(Color.BLACK);  // 텍스트 색 흰색
-		MId_JL.setOpaque(true);  // 배경색이 보이도록 설정
+		MId_JL.setBackground(Color.WHITE);
+		MId_JL.setForeground(Color.BLACK);
+		MId_JL.setOpaque(true);
 		
-		MPwd_JL.setBackground(Color.WHITE);  // 배경색 초록색
-		MPwd_JL.setForeground(Color.BLACK);  // 텍스트 색 흰색
-		MPwd_JL.setOpaque(true);  // 배경색이 보이도록 설정
+		MPwd_JL.setBackground(Color.WHITE);
+		MPwd_JL.setForeground(Color.BLACK);
+		MPwd_JL.setOpaque(true);
 		
 		 // 로그인 버튼 클릭 시 아이디와 비밀번호 확인
         Login_BT.addActionListener(e -> {
-        String ID = MId_TF.getText();  // 입력된 아이디
-        String password = new String(MPwd_PF.getPassword());  // 입력된 비밀번호
+        String ID = MId_TF.getText();
+        String password = new String(MPwd_PF.getPassword());
 
          // 데이터베이스 연결
          connect();

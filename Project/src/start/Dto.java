@@ -37,7 +37,6 @@ public class Dto {
 		this.name = name;
 	}
 
-
 	private String schedule_num;
 
 	public String getSchedule_num() {
@@ -115,7 +114,4 @@ public class Dto {
 	public void setStartDay(String startDay) {
 		this.startDay = startDay;
 	}
-	
-	
-	
 }

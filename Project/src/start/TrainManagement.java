@@ -15,26 +15,15 @@ public class TrainManagement extends JFrame {
     private JPanel contentPane;
     private DefaultTableModel model;
     private JTable table;
-    private JPanel cardPanel; // 카드 레이아웃을 적용할 패널
-    private JPanel tablePanel; // 테이블을 보여주는 패널
-    private JPanel addPanel;   // 추가 화면을 보여주는 패널
+    private JPanel cardPanel, tablePanel, addPanel;
     
     // 입력 필드
     private JTextField TrainNum_TF;
-    private JComboBox<String> StandSeat_CB, Count_CB, TrainType_CB, year_CB, month_CB, Day_CB, arrYear_CB, arrMonth_CB, arrDay_CB,
-    Start_CB, Arr_CB, Charge_CB, babySeat_CB, EconomySeat_CB, Hour_CB, Minute_CB, arrHour_CB, arrMinute_CB;  
-    private JLabel Month_LB;
-    private JLabel arrMonth_LB;
-    private JLabel Day_LB;
-    private JLabel arrDay_LB;
-    private JLabel Hour_LB;
-    private JLabel arrHour_LB;
-    private JLabel Minute_LB;
-    private JLabel arrMinute_LB;
-    private JLabel Seat_LB;
-    private JLabel seat_LB;
-    private JLabel seat_LB_1;
-    private JLabel Won_LB;
+    private JComboBox<String> StandSeat_CB, Count_CB, TrainType_CB, year_CB, month_CB, Day_CB, 
+    						  arrYear_CB, arrMonth_CB, arrDay_CB, Start_CB, Arr_CB, Charge_CB, 
+    						  babySeat_CB, EconomySeat_CB, Hour_CB, Minute_CB, arrHour_CB, arrMinute_CB;  
+    private JLabel Month_LB, arrMonth_LB, Day_LB, arrDay_LB, Hour_LB, arrHour_LB, Minute_LB, arrMinute_LB,
+    			   Seat_LB, seat_LB, seat_LB_1, Won_LB;
     
     public TrainManagement() {
         setTitle("기차 관리");
@@ -97,11 +86,9 @@ public class TrainManagement extends JFrame {
         TrainType_CB.setBounds(855, 41, 100, 23);
         addPanel.add(TrainType_CB);
         
-        //new ButtonGroup();
-        
         String[] trainNo = {"선택", "1", "2", "3"};
         Count_CB = new JComboBox<String>(trainNo);
-        Count_CB.setModel(new DefaultComboBoxModel(new String[] {"", "1", "2", "3"}));
+        Count_CB.setModel(new DefaultComboBoxModel<String>(new String[] {"", "1", "2", "3"}));
         Count_CB.setBackground(new Color(255, 255, 255));
         Count_CB.setForeground(new Color(0, 0, 0));
         Count_CB.setBounds(441, 41, 123, 23);
@@ -138,29 +125,36 @@ public class TrainManagement extends JFrame {
         String[] month = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
         month_CB = new JComboBox<String>(month);
         month_CB.setBackground(new Color(255, 255, 255));
-        month_CB.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
+        month_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
         month_CB.setBounds(523, 113, 50, 23);
         addPanel.add(month_CB);
         
         Day_CB = new JComboBox<String>();
         Day_CB.setBackground(new Color(255, 255, 255));
-        Day_CB.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+        Day_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", 
+        				"16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", 
+        				"30", "31"}));
         Day_CB.setBounds(596, 112, 50, 23);
         addPanel.add(Day_CB);
         
         arrMonth_CB = new JComboBox<String>();
         arrMonth_CB.setBackground(new Color(255, 255, 255));
-        arrMonth_CB.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
+        arrMonth_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
         arrMonth_CB.setBounds(523, 172, 50, 23);
         addPanel.add(arrMonth_CB);
         
         arrDay_CB = new JComboBox<String>();
         arrDay_CB.setBackground(new Color(255, 255, 255));
-        arrDay_CB.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+        arrDay_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", 
+        				"16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", 
+        				"30", "31"}));
         arrDay_CB.setBounds(596, 171, 50, 23);
         addPanel.add(arrDay_CB);
         
-
         Arr_CB = new JComboBox<String>();
         Arr_CB.setBackground(new Color(255, 255, 255));
         Arr_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
@@ -189,7 +183,8 @@ public class TrainManagement extends JFrame {
         
         babySeat_CB = new JComboBox<String>();
         babySeat_CB.setBackground(new Color(255, 255, 255));
-        babySeat_CB.setModel(new DefaultComboBoxModel(new String[] {"", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30"}));
+        babySeat_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30"}));
         babySeat_CB.setBounds(449, 234, 123, 23);
         addPanel.add(babySeat_CB);
         
@@ -199,7 +194,8 @@ public class TrainManagement extends JFrame {
         
         EconomySeat_CB = new JComboBox<String>();
         EconomySeat_CB.setBackground(new Color(255, 255, 255));
-        EconomySeat_CB.setModel(new DefaultComboBoxModel(new String[] {"", "30", "35", "40", "45", "50", "55", "60", "65", "70", "75"}));
+        EconomySeat_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"", "30", "35", "40", "45", "50", "55", "60", "65", "70", "75"}));
         EconomySeat_CB.setBounds(213, 234, 100, 23);
         addPanel.add(EconomySeat_CB);
         
@@ -209,31 +205,39 @@ public class TrainManagement extends JFrame {
         
         Charge_CB = new JComboBox<String>();
         Charge_CB.setBackground(new Color(255, 255, 255));
-        Charge_CB.setModel(new DefaultComboBoxModel(new String[] {"", "30000", "31000", "32000", "33000", "40000", "41000", "42000", "43000", "50000", "51000", "52000", "53000"}));
+        Charge_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"", "30000", "31000", "32000", "33000", "40000", "41000", "42000", "43000", "50000", 
+        				"51000", "52000", "53000"}));
         Charge_CB.setBounds(212, 291, 100, 23);
         addPanel.add(Charge_CB);
         
         Hour_CB = new JComboBox<String>();
         Hour_CB.setBackground(new Color(255, 255, 255));
-        Hour_CB.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+        Hour_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
+        				"15", "16", "17", "18", "19", "20", "21", "22", "23"}));
         Hour_CB.setBounds(693, 113, 50, 23);
         addPanel.add(Hour_CB);
         
         Minute_CB = new JComboBox<String>();
         Minute_CB.setBackground(new Color(255, 255, 255));
-        Minute_CB.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
+        Minute_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
         Minute_CB.setBounds(788, 113, 50, 23);
         addPanel.add(Minute_CB);
         
         arrHour_CB = new JComboBox<String>();
         arrHour_CB.setBackground(new Color(255, 255, 255));
-        arrHour_CB.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+        arrHour_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", 
+        				"15", "16", "17", "18", "19", "20", "21", "22", "23"}));
         arrHour_CB.setBounds(693, 172, 50, 23);
         addPanel.add(arrHour_CB);
         
         arrMinute_CB = new JComboBox<String>();
         arrMinute_CB.setBackground(new Color(255, 255, 255));
-        arrMinute_CB.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
+        arrMinute_CB.setModel(new DefaultComboBoxModel<String>(new String[] 
+        		{"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
         arrMinute_CB.setBounds(788, 172, 50, 23);
         addPanel.add(arrMinute_CB);
         
@@ -492,7 +496,21 @@ public class TrainManagement extends JFrame {
             pstmt.setString(7, baby_seat);
             pstmt.setString(8, standSeat);
             pstmt.executeUpdate();
-
+            
+            // 시트 추가 SQL
+            String seattablesql = "insert into seatinfo(train_num, schedule_num, one_seat_count, inside_seat_count, outside_seat_count) values(?,schedule_seq.currval,floor(?/3),floor(?/3),(FLOOR(?/3)+MOD(?,3)))";
+            //train_num / schedule_num / one_seat_count / inside_seat_count / outside_seat_count
+            //EconomySeat_CB
+            
+            pstmt = conn.prepareStatement(seattablesql); 
+            pstmt.setString(1, trainNum);
+            pstmt.setInt(2, Integer.parseInt((String) EconomySeat_CB.getSelectedItem()));
+            pstmt.setInt(3, Integer.parseInt((String) EconomySeat_CB.getSelectedItem()));
+            pstmt.setInt(4, Integer.parseInt((String) EconomySeat_CB.getSelectedItem()));
+            pstmt.setInt(5, Integer.parseInt((String) EconomySeat_CB.getSelectedItem()));
+            
+            pstmt.executeUpdate();
+            
             JOptionPane.showMessageDialog(this, "기차 정보 추가 완료.");
             clearAddFields(); // 입력 필드 초기화
         } catch (SQLException e) {
@@ -575,7 +593,7 @@ public class TrainManagement extends JFrame {
                 pstmt = conn.prepareStatement(deleteSchedule);
                 pstmt.setString(1, trainNum);
                 pstmt.executeUpdate();
-
+                
                 String deleteTrain = "DELETE FROM train WHERE train_num = ?";
                 pstmt = conn.prepareStatement(deleteTrain);
                 pstmt.setString(1, trainNum);
